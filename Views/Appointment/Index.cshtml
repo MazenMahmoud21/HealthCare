@@ -1,0 +1,10 @@
+@model IEnumerable<HealthcareSystem.Models.Appointment>
+
+    <h1>Appointments</h1>
+
+    <ul>
+        @foreach (var a in Model)
+    {
+        <li>@a.Id - @a.AppointmentDate - @a.Status</li>
+    }
+    </ul>

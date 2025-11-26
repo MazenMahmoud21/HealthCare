@@ -1,0 +1,22 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build results
+bin/
+obj/
+Debug/
+Release/
+
+# Rider
+.idea/
+
+# User-specific files
+*.rsuser
+*.dotCover
+
+# EF Core Migrations (optional, you may want to track these)
+# Migrations/
