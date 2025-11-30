@@ -3,48 +3,53 @@
     ViewData["Title"] = "My Appointments";
 }
 
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="text-primary mb-0"><i class="bi bi-calendar2-check me-2"></i>My Appointments</h2>
-            <p class="text-muted mb-0">View all your scheduled appointments</p>
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+        <div class="mb-3 mb-md-0">
+            <h1 class="page-title mb-1">My Appointments</h1>
+            <p class="page-subtitle mb-0">View all your scheduled appointments</p>
         </div>
         <a asp-action="Create" class="btn btn-primary">
-            <i class="bi bi-plus-circle me-2"></i>Book New Appointment
+            <i class="fas fa-plus me-1"></i> Book Appointment
         </a>
     </div>
-
-    <!-- Filter Tabs -->
-    <ul class="nav nav-tabs mb-4" id="appointmentTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button">
-                All <span class="badge bg-secondary">@Model.Count()</span>
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button">
-                Upcoming <span class="badge bg-primary">@Model.Count(a => a.Status == "Scheduled" && a.AppointmentDate >= DateTime.Now)</span>
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button">
-                Completed <span class="badge bg-success">@Model.Count(a => a.Status == "Completed")</span>
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="cancelled-tab" data-bs-toggle="tab" data-bs-target="#cancelled" type="button">
-                Cancelled <span class="badge bg-danger">@Model.Count(a => a.Status == "Cancelled")</span>
-            </button>
-        </li>
-    </ul>
 
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+            <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
+
+    <!-- Filter Tabs -->
+    <div class="card mb-4">
+        <div class="card-body p-0">
+            <ul class="nav nav-tabs border-0 px-3 pt-3" id="appointmentTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button">
+                        All <span class="badge bg-secondary ms-1">@Model.Count()</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button">
+                        Upcoming <span class="badge bg-primary ms-1">@Model.Count(a => a.Status == "Scheduled" && a.AppointmentDate >= DateTime.Now)</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button">
+                        Completed <span class="badge bg-success ms-1">@Model.Count(a => a.Status == "Completed")</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="cancelled-tab" data-bs-toggle="tab" data-bs-target="#cancelled" type="button">
+                        Cancelled <span class="badge bg-danger ms-1">@Model.Count(a => a.Status == "Cancelled")</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     @if (Model != null && Model.Any())
     {
@@ -73,13 +78,15 @@
     else
     {
         <div class="card">
-            <div class="card-body text-center py-5">
-                <i class="bi bi-calendar-x fs-1 text-muted"></i>
-                <h5 class="mt-3">No Appointments</h5>
-                <p class="text-muted">You haven't scheduled any appointments yet.</p>
-                <a asp-action="Create" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-2"></i>Book Your First Appointment
-                </a>
+            <div class="card-body">
+                <div class="empty-state py-5">
+                    <i class="fas fa-calendar-times"></i>
+                    <h5>No Appointments</h5>
+                    <p>You haven't scheduled any appointments yet.</p>
+                    <a asp-action="Create" class="btn btn-primary">
+                        <i class="fas fa-plus me-1"></i> Book Your First Appointment
+                    </a>
+                </div>
             </div>
         </div>
     }

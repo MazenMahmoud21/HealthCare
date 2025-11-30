@@ -1,135 +1,256 @@
 @model RegisterDto
 @{
     ViewData["Title"] = "Create Account";
+    Layout = "_Layout";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="glass-panel overflow-hidden rounded-4 shadow-lg fade-in">
-                <div class="card-header bg-transparent border-bottom-0 p-5 pb-0 text-center position-relative">
-                    <!-- Decorative Background -->
-                    <div class="position-absolute top-0 start-0 w-100 h-100" style="background: linear-gradient(180deg, rgba(15, 118, 110, 0.05) 0%, rgba(255,255,255,0) 100%); z-index: -1;"></div>
+<div class="auth-page">
+    <div class="auth-container auth-container-lg">
+        <div class="auth-card">
+            <!-- Logo/Brand -->
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <h1 class="auth-title">Create your account</h1>
+                <p class="auth-subtitle">Join Egypt's trusted healthcare platform</p>
+            </div>
+
+            <form asp-action="Register" method="post" class="auth-form">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <!-- Account Section -->
+                <div class="form-section">
+                    <h6 class="form-section-title">Account Information</h6>
                     
-                    <div class="mb-4 animate-float">
-                        <div class="d-inline-block p-3 rounded-circle glass-panel bg-white shadow-sm">
-                            <i class="fas fa-user-plus fa-3x text-gradient"></i>
+                    <div class="form-group">
+                        <label asp-for="Email" class="form-label">Email Address</label>
+                        <input asp-for="Email" class="form-control" placeholder="mazen.mahmoud@example.eg" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label asp-for="Password" class="form-label">Password</label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Create a password" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                         </div>
                     </div>
-                    <h2 class="fw-bold display-6 mb-2">Create Account</h2>
-                    <p class="text-muted lead">Join our healthcare community today</p>
                 </div>
-                
-                <div class="card-body p-5 pt-4">
-                    <form asp-action="Register" method="post">
-                        <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 border-0 shadow-sm" role="alert"></div>
 
-                        <!-- Account Information Section -->
-                        <div class="mb-5">
-                            <h5 class="text-primary fw-bold border-bottom pb-2 mb-4 d-flex align-items-center">
-                                <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px; font-size: 0.9rem;">1</span>
-                                Account Information
-                            </h5>
-                            <div class="row g-4">
-                                <div class="col-12">
-                                    <label asp-for="Email" class="form-label fw-semibold text-muted">Email Address</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-envelope text-primary"></i></span>
-                                        <input asp-for="Email" class="form-control bg-light border-start-0 ps-0" placeholder="name@example.com" />
-                                    </div>
-                                    <span asp-validation-for="Email" class="text-danger small"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="Password" class="form-label fw-semibold text-muted">Password</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-lock text-primary"></i></span>
-                                        <input asp-for="Password" type="password" class="form-control bg-light border-start-0 ps-0" placeholder="••••••••" />
-                                    </div>
-                                    <span asp-validation-for="Password" class="text-danger small"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="ConfirmPassword" class="form-label fw-semibold text-muted">Confirm Password</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-check-circle text-primary"></i></span>
-                                        <input asp-for="ConfirmPassword" type="password" class="form-control bg-light border-start-0 ps-0" placeholder="••••••••" />
-                                    </div>
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
-                                </div>
-                            </div>
+                <!-- Personal Section -->
+                <div class="form-section">
+                    <h6 class="form-section-title">Personal Details</h6>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="form-label">First Name</label>
+                            <input asp-for="FirstName" class="form-control" placeholder="Mazen" />
+                            <span asp-validation-for="FirstName" class="text-danger small"></span>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="LastName" class="form-label">Last Name</label>
+                            <input asp-for="LastName" class="form-control" placeholder="Mahmoud" />
+                            <span asp-validation-for="LastName" class="text-danger small"></span>
+                        </div>
+                    </div>
 
-                        <!-- Personal Information Section -->
-                        <div class="mb-5">
-                            <h5 class="text-primary fw-bold border-bottom pb-2 mb-4 d-flex align-items-center">
-                                <span class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px; font-size: 0.9rem;">2</span>
-                                Personal Details
-                            </h5>
-                            <div class="row g-4">
-                                <div class="col-md-6">
-                                    <label asp-for="FirstName" class="form-label fw-semibold text-muted">First Name</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-id-card text-primary"></i></span>
-                                        <input asp-for="FirstName" class="form-control bg-light border-start-0 ps-0" placeholder="John" />
-                                    </div>
-                                    <span asp-validation-for="FirstName" class="text-danger small"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="LastName" class="form-label fw-semibold text-muted">Last Name</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-id-card text-primary"></i></span>
-                                        <input asp-for="LastName" class="form-control bg-light border-start-0 ps-0" placeholder="Doe" />
-                                    </div>
-                                    <span asp-validation-for="LastName" class="text-danger small"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="DateOfBirth" class="form-label fw-semibold text-muted">Date of Birth</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-calendar-alt text-primary"></i></span>
-                                        <input asp-for="DateOfBirth" type="date" class="form-control bg-light border-start-0 ps-0" />
-                                    </div>
-                                    <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="Gender" class="form-label fw-semibold text-muted">Gender</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-venus-mars text-primary"></i></span>
-                                        <select asp-for="Gender" class="form-select bg-light border-start-0 ps-0">
-                                            <option value="">Select Gender</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other">Other</option>
-                                        </select>
-                                    </div>
-                                    <span asp-validation-for="Gender" class="text-danger small"></span>
-                                </div>
-                                <div class="col-md-6">
-                                    <label asp-for="Phone" class="form-label fw-semibold text-muted">Phone Number</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light border-end-0"><i class="fas fa-phone text-primary"></i></span>
-                                        <input asp-for="Phone" class="form-control bg-light border-start-0 ps-0" placeholder="+1 (555) 000-0000" />
-                                    </div>
-                                    <span asp-validation-for="Phone" class="text-danger small"></span>
-                                </div>
-                            </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
+                            <input asp-for="DateOfBirth" type="date" class="form-control" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger small"></span>
                         </div>
+                        <div class="form-group">
+                            <label asp-for="Gender" class="form-label">Gender</label>
+                            <select asp-for="Gender" class="form-select">
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger small"></span>
+                        </div>
+                    </div>
 
-                        <div class="d-grid gap-3">
-                            <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-sm hover-scale">
-                                Create Account <i class="fas fa-arrow-right ms-2"></i>
-                            </button>
-                            <div class="text-center">
-                                <span class="text-muted">Already have an account?</span>
-                                <a asp-action="Login" class="text-primary fw-bold text-decoration-none hover-scale d-inline-block ms-1">
-                                    Sign In
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+                    <div class="form-group">
+                        <label asp-for="Phone" class="form-label">Phone Number</label>
+                        <input asp-for="Phone" class="form-control" placeholder="+20 10 1234 5678" />
+                        <span asp-validation-for="Phone" class="text-danger small"></span>
+                    </div>
                 </div>
-            </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    Create Account
+                </button>
+
+                <p class="auth-footer">
+                    Already have an account? <a asp-action="Login">Sign in</a>
+                </p>
+            </form>
         </div>
+
+        <p class="auth-copyright">&copy; 2025 Healthcare Egypt. All rights reserved.</p>
     </div>
 </div>
+
+<style>
+    .auth-page {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding: 2rem 1rem;
+    }
+
+    .auth-container {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .auth-container-lg {
+        max-width: 480px;
+    }
+
+    .auth-card {
+        background: white;
+        border-radius: 16px;
+        padding: 2.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .auth-logo {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #4F46E5, #6366F1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    .auth-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 0.5rem;
+    }
+
+    .auth-subtitle {
+        color: #64748b;
+        font-size: 0.9375rem;
+        margin: 0;
+    }
+
+    .auth-form .form-section {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .auth-form .form-section:last-of-type {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .form-section-title {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: #4F46E5;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 1rem;
+    }
+
+    .auth-form .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .auth-form .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    @@media (max-width: 480px) {
+        .auth-form .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .auth-form .form-label {
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    .auth-form .form-control,
+    .auth-form .form-select {
+        padding: 0.75rem 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 0.9375rem;
+        transition: all 0.2s;
+    }
+
+    .auth-form .form-control:focus,
+    .auth-form .form-select:focus {
+        border-color: #4F46E5;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .auth-form .form-control::placeholder {
+        color: #94a3b8;
+    }
+
+    .auth-form .btn-primary {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        border-radius: 8px;
+        margin-top: 0.5rem;
+    }
+
+    .auth-footer {
+        text-align: center;
+        margin-top: 1.5rem;
+        margin-bottom: 0;
+        color: #64748b;
+        font-size: 0.875rem;
+    }
+
+    .auth-footer a {
+        color: #4F46E5;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .auth-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .auth-copyright {
+        text-align: center;
+        color: #94a3b8;
+        font-size: 0.8125rem;
+        margin-top: 1.5rem;
+    }
+</style>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

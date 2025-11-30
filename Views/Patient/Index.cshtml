@@ -3,28 +3,29 @@
     ViewData["Title"] = "Patient Management";
 }
 
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="text-primary mb-0"><i class="bi bi-people me-2"></i>Patient Management</h2>
-            <p class="text-muted mb-0">Manage all registered patients in the system</p>
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+        <div class="mb-3 mb-md-0">
+            <h1 class="page-title mb-1">Patients</h1>
+            <p class="page-subtitle mb-0">Manage all registered patients</p>
         </div>
         <a asp-action="Create" class="btn btn-primary">
-            <i class="bi bi-person-plus me-2"></i>Add New Patient
+            <i class="fas fa-user-plus me-1"></i> Add Patient
         </a>
     </div>
 
     <!-- Search and Filter -->
     <div class="card mb-4">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
+        <div class="card-body py-3">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-4 col-lg-3">
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
                         <input type="text" class="form-control" id="searchInput" placeholder="Search patients...">
                     </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-6 col-md-2">
                     <select class="form-select" id="bloodGroupFilter">
                         <option value="">All Blood Groups</option>
                         <option value="A+">A+</option>
@@ -37,7 +38,7 @@
                         <option value="O-">O-</option>
                     </select>
                 </div>
-                <div class="col-md-2">
+                <div class="col-6 col-md-2">
                     <select class="form-select" id="genderFilter">
                         <option value="">All Genders</option>
                         <option value="Male">Male</option>
@@ -51,21 +52,21 @@
 
     <!-- Patients Table -->
     <div class="card">
-        <div class="card-body">
+        <div class="card-body p-0">
             @if (Model != null && Model.Any())
             {
                 <div class="table-responsive">
-                    <table class="table table-hover" id="patientsTable">
-                        <thead class="table-light">
+                    <table class="table table-hover mb-0" id="patientsTable">
+                        <thead>
                             <tr>
-                                <th>Patient Name</th>
+                                <th>Patient</th>
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Date of Birth</th>
                                 <th>Gender</th>
                                 <th>Blood Group</th>
                                 <th>Registered</th>
-                                <th>Actions</th>
+                                <th class="text-end">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -74,15 +75,15 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <div class="avatar-circle bg-primary text-white me-2">
+                                            <div class="avatar me-2" style="background: #E0E7FF; color: #4F46E5;">
                                                 @patient.FirstName?.Substring(0, 1)@patient.LastName?.Substring(0, 1)
                                             </div>
                                             <div>
-                                                <strong>@patient.FirstName @patient.LastName</strong>
+                                                <div class="fw-semibold">@patient.FirstName @patient.LastName</div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>@patient.User?.Email</td>
+                                    <td class="text-muted">@patient.User?.Email</td>
                                     <td>@patient.Phone</td>
                                     <td>@patient.DateOfBirth.ToString("MMM dd, yyyy")</td>
                                     <td>@patient.Gender</td>
@@ -91,17 +92,21 @@
                                         {
                                             <span class="badge bg-danger">@patient.BloodGroup</span>
                                         }
+                                        else
+                                        {
+                                            <span class="text-muted">—</span>
+                                        }
                                     </td>
-                                    <td>@patient.CreatedAt.ToString("MMM dd, yyyy")</td>
-                                    <td>
-                                        <div class="btn-group" role="group">
+                                    <td class="text-muted">@patient.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                    <td class="text-end">
+                                        <div class="d-flex justify-content-end gap-1">
                                             <a asp-action="Details" asp-route-id="@patient.Id" 
-                                               class="btn btn-sm btn-outline-primary" title="View Details">
-                                                <i class="bi bi-eye"></i>
+                                               class="btn btn-sm btn-ghost" title="View Details">
+                                                <i class="fas fa-eye"></i>
                                             </a>
                                             <a asp-controller="Appointment" asp-action="Create" asp-route-patientId="@patient.Id"
-                                               class="btn btn-sm btn-outline-success" title="Book Appointment">
-                                                <i class="bi bi-calendar-plus"></i>
+                                               class="btn btn-sm btn-ghost text-success" title="Book Appointment">
+                                                <i class="fas fa-calendar-plus"></i>
                                             </a>
                                         </div>
                                     </td>
@@ -110,37 +115,24 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <span class="text-muted">Showing <span id="visibleCount">@Model.Count()</span> of @Model.Count() patients</span>
+                <div class="card-footer bg-transparent border-top">
+                    <span class="text-muted small">Showing <span id="visibleCount">@Model.Count()</span> of @Model.Count() patients</span>
                 </div>
             }
             else
             {
-                <div class="text-center py-5">
-                    <i class="bi bi-people fs-1 text-muted"></i>
-                    <h5 class="mt-3">No Patients Found</h5>
-                    <p class="text-muted">There are no registered patients in the system yet.</p>
+                <div class="empty-state py-5">
+                    <i class="fas fa-users"></i>
+                    <h5>No Patients Found</h5>
+                    <p>There are no registered patients in the system yet.</p>
                     <a asp-action="Create" class="btn btn-primary">
-                        <i class="bi bi-person-plus me-2"></i>Add First Patient
+                        <i class="fas fa-user-plus me-1"></i> Add First Patient
                     </a>
                 </div>
             }
         </div>
     </div>
 </div>
-
-<style>
-    .avatar-circle {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.75rem;
-        font-weight: bold;
-    }
-</style>
 
 @section Scripts {
     <script>

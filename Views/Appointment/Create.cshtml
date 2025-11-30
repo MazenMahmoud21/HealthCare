@@ -5,167 +5,198 @@
     var isPatient = role == "Patient";
 }
 
-<div class="row justify-content-center">
-    <div class="col-lg-8">
-        <div class="card shadow-sm">
-            <div class="card-header bg-info text-white">
-                <h4 class="mb-0"><i class="bi bi-calendar-plus me-2"></i>Book an Appointment</h4>
-            </div>
-            <div class="card-body p-4">
-                @if (ViewBag.Error != null)
+<div class="container-fluid px-4 py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Page Header -->
+            <div class="d-flex align-items-center mb-4">
+                @if (isPatient)
                 {
-                    <div class="alert alert-danger">
-                        <i class="bi bi-exclamation-triangle me-2"></i>@ViewBag.Error
-                    </div>
+                    <a asp-controller="Home" asp-action="PatientDashboard" class="btn btn-ghost me-3">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
                 }
+                else
+                {
+                    <a asp-action="Index" class="btn btn-ghost me-3">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                }
+                <div>
+                    <h1 class="page-title mb-0">Book Appointment</h1>
+                    <p class="page-subtitle mb-0">Schedule a new appointment with a doctor</p>
+                </div>
+            </div>
 
-                <form asp-action="Create" method="post" id="appointmentForm">
-                    @Html.AntiForgeryToken()
-
-                    @if (!isPatient)
+            <div class="card">
+                <div class="card-body p-4">
+                    @if (ViewBag.Error != null)
                     {
-                        <!-- Patient Selection (Admin only) -->
-                        <h5 class="text-muted mb-3 border-bottom pb-2">
-                            <i class="bi bi-person me-2"></i>Select Patient
-                        </h5>
-                        
-                        <div class="mb-4">
-                            <label asp-for="PatientId" class="form-label">Patient *</label>
-                            <select asp-for="PatientId" class="form-select" required>
-                                <option value="">-- Select Patient --</option>
-                                @if (ViewBag.Patients != null)
-                                {
-                                    @foreach (var patient in (IEnumerable<HealthcareSystem.Models.Patient>)ViewBag.Patients)
-                                    {
-                                        <option value="@patient.Id">@patient.FirstName @patient.LastName (@patient.User?.Email)</option>
-                                    }
-                                }
-                            </select>
-                            <span asp-validation-for="PatientId" class="text-danger"></span>
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle me-2"></i>@ViewBag.Error
                         </div>
                     }
 
-                    <!-- Doctor Selection -->
-                    <h5 class="text-muted mb-3 border-bottom pb-2">
-                        <i class="bi bi-heart-pulse me-2"></i>Select Doctor
-                    </h5>
+                    <form asp-action="Create" method="post" id="appointmentForm">
+                        @Html.AntiForgeryToken()
 
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Filter by Specialization</label>
-                            <select class="form-select" id="specializationFilter">
-                                <option value="">All Specializations</option>
-                                @if (ViewBag.Doctors != null)
-                                {
-                                    var specializations = ((IEnumerable<HealthcareSystem.Models.Doctor>)ViewBag.Doctors)
-                                        .Select(d => d.Specialization).Distinct().OrderBy(s => s);
-                                    foreach (var spec in specializations)
-                                    {
-                                        <option value="@spec">@spec</option>
-                                    }
-                                }
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label asp-for="DoctorId" class="form-label">Doctor *</label>
-                            <select asp-for="DoctorId" class="form-select" id="doctorSelect" required>
-                                <option value="">-- Select Doctor --</option>
-                                @if (ViewBag.Doctors != null)
-                                {
-                                    @foreach (var doctor in (IEnumerable<HealthcareSystem.Models.Doctor>)ViewBag.Doctors)
-                                    {
-                                        <option value="@doctor.Id" data-specialization="@doctor.Specialization" data-fee="@doctor.ConsultationFee.ToString("F2")">
-                                            Dr. @doctor.FirstName @doctor.LastName - @doctor.Specialization ($@doctor.ConsultationFee.ToString("F2"))
-                                        </option>
-                                    }
-                                }
-                            </select>
-                            <span asp-validation-for="DoctorId" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    <div id="doctorInfo" class="alert alert-info d-none mb-4">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <strong id="selectedDoctorName"></strong><br>
-                                <small class="text-muted" id="selectedSpecialization"></small>
-                            </div>
-                            <div class="col-md-4 text-end">
-                                <span class="badge bg-success fs-6">Fee: $<span id="selectedFee"></span></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr class="my-4">
-
-                    <!-- Appointment Details -->
-                    <h5 class="text-muted mb-3 border-bottom pb-2">
-                        <i class="bi bi-calendar-event me-2"></i>Appointment Details
-                    </h5>
-
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Appointment Date *</label>
-                            <input type="date" class="form-control" id="appointmentDate" name="AppointmentDate" 
-                                   min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Appointment Time *</label>
-                            <select class="form-select" id="appointmentTime" required>
-                                <option value="">-- Select Time --</option>
-                                <option value="09:00">09:00 AM</option>
-                                <option value="09:30">09:30 AM</option>
-                                <option value="10:00">10:00 AM</option>
-                                <option value="10:30">10:30 AM</option>
-                                <option value="11:00">11:00 AM</option>
-                                <option value="11:30">11:30 AM</option>
-                                <option value="14:00">02:00 PM</option>
-                                <option value="14:30">02:30 PM</option>
-                                <option value="15:00">03:00 PM</option>
-                                <option value="15:30">03:30 PM</option>
-                                <option value="16:00">04:00 PM</option>
-                                <option value="16:30">04:30 PM</option>
-                                <option value="17:00">05:00 PM</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Hidden field for combined datetime -->
-                    <input type="hidden" name="AppointmentDate" id="combinedDateTime" />
-
-                    <div class="mb-4">
-                        <label asp-for="Reason" class="form-label">Reason for Visit *</label>
-                        <textarea asp-for="Reason" class="form-control" rows="3" 
-                                  placeholder="Please describe your symptoms or reason for the appointment" required></textarea>
-                        <span asp-validation-for="Reason" class="text-danger"></span>
-                        <small class="text-muted">This information helps the doctor prepare for your visit.</small>
-                    </div>
-
-                    <div class="mb-4">
-                        <label asp-for="Notes" class="form-label">Additional Notes (Optional)</label>
-                        <textarea asp-for="Notes" class="form-control" rows="2" 
-                                  placeholder="Any additional information (allergies, current medications, etc.)"></textarea>
-                        <span asp-validation-for="Notes" class="text-danger"></span>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        @if (isPatient)
+                        @if (!isPatient)
                         {
-                            <a asp-controller="Home" asp-action="PatientDashboard" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
-                            </a>
+                            <!-- Patient Selection (Admin only) -->
+                            <div class="mb-4">
+                                <h6 class="text-muted mb-3 d-flex align-items-center">
+                                    <span class="badge bg-primary me-2">1</span> Select Patient
+                                </h6>
+                                
+                                <div class="mb-3">
+                                    <label asp-for="PatientId" class="form-label">Patient *</label>
+                                    <select asp-for="PatientId" class="form-select" required>
+                                        <option value="">Choose a patient...</option>
+                                        @if (ViewBag.Patients != null)
+                                        {
+                                            @foreach (var patient in (IEnumerable<HealthcareSystem.Models.Patient>)ViewBag.Patients)
+                                            {
+                                                <option value="@patient.Id">@patient.FirstName @patient.LastName (@patient.User?.Email)</option>
+                                            }
+                                        }
+                                    </select>
+                                    <span asp-validation-for="PatientId" class="text-danger small"></span>
+                                </div>
+                            </div>
+                            <hr class="my-4">
                         }
-                        else
-                        {
-                            <a asp-action="Index" class="btn btn-outline-secondary">
-                                <i class="bi bi-arrow-left me-2"></i>Back to List
-                            </a>
-                        }
-                        <button type="submit" class="btn btn-info">
-                            <i class="bi bi-calendar-check me-2"></i>Book Appointment
-                        </button>
-                    </div>
-                </form>
+
+                        <!-- Doctor Selection -->
+                        <div class="mb-4">
+                            <h6 class="text-muted mb-3 d-flex align-items-center">
+                                <span class="badge bg-primary me-2">@(isPatient ? "1" : "2")</span> Select Doctor
+                            </h6>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Filter by Specialization</label>
+                                    <select class="form-select" id="specializationFilter">
+                                        <option value="">All Specializations</option>
+                                        @if (ViewBag.Doctors != null)
+                                        {
+                                            var specializations = ((IEnumerable<HealthcareSystem.Models.Doctor>)ViewBag.Doctors)
+                                                .Select(d => d.Specialization).Distinct().OrderBy(s => s);
+                                            foreach (var spec in specializations)
+                                            {
+                                                <option value="@spec">@spec</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label asp-for="DoctorId" class="form-label">Doctor *</label>
+                                    <select asp-for="DoctorId" class="form-select" id="doctorSelect" required>
+                                        <option value="">Choose a doctor...</option>
+                                        @if (ViewBag.Doctors != null)
+                                        {
+                                            @foreach (var doctor in (IEnumerable<HealthcareSystem.Models.Doctor>)ViewBag.Doctors)
+                                            {
+                                                <option value="@doctor.Id" data-specialization="@doctor.Specialization" data-fee="@doctor.ConsultationFee.ToString("F2")">
+                                                    Dr. @doctor.FirstName @doctor.LastName - @doctor.Specialization ($@doctor.ConsultationFee.ToString("F2"))
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                    <span asp-validation-for="DoctorId" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <div id="doctorInfo" class="d-none mb-3">
+                                <div class="info-card">
+                                    <div class="info-icon" style="background: #D1FAE5; color: #059669;">
+                                        <i class="fas fa-user-md"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0" id="selectedDoctorName"></h6>
+                                        <p id="selectedSpecialization"></p>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-success">$<span id="selectedFee"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Appointment Details -->
+                        <div class="mb-4">
+                            <h6 class="text-muted mb-3 d-flex align-items-center">
+                                <span class="badge bg-primary me-2">@(isPatient ? "2" : "3")</span> Appointment Details
+                            </h6>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Appointment Date *</label>
+                                    <input type="date" class="form-control" id="appointmentDate" name="AppointmentDate" 
+                                           min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Appointment Time *</label>
+                                    <select class="form-select" id="appointmentTime" required>
+                                        <option value="">Choose a time...</option>
+                                        <option value="09:00">09:00 AM</option>
+                                        <option value="09:30">09:30 AM</option>
+                                        <option value="10:00">10:00 AM</option>
+                                        <option value="10:30">10:30 AM</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="11:30">11:30 AM</option>
+                                        <option value="14:00">02:00 PM</option>
+                                        <option value="14:30">02:30 PM</option>
+                                        <option value="15:00">03:00 PM</option>
+                                        <option value="15:30">03:30 PM</option>
+                                        <option value="16:00">04:00 PM</option>
+                                        <option value="16:30">04:30 PM</option>
+                                        <option value="17:00">05:00 PM</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Hidden field for combined datetime -->
+                            <input type="hidden" name="AppointmentDate" id="combinedDateTime" />
+
+                            <div class="mb-3">
+                                <label asp-for="Reason" class="form-label">Reason for Visit *</label>
+                                <textarea asp-for="Reason" class="form-control" rows="3" 
+                                          placeholder="Please describe your symptoms or reason for the appointment" required></textarea>
+                                <span asp-validation-for="Reason" class="text-danger small"></span>
+                                <div class="form-text">This information helps the doctor prepare for your visit.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Notes" class="form-label">Additional Notes</label>
+                                <textarea asp-for="Notes" class="form-control" rows="2" 
+                                          placeholder="Any additional information (allergies, current medications, etc.)"></textarea>
+                                <span asp-validation-for="Notes" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-end gap-2">
+                            @if (isPatient)
+                            {
+                                <a asp-controller="Home" asp-action="PatientDashboard" class="btn btn-ghost">
+                                    Cancel
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-action="Index" class="btn btn-ghost">
+                                    Cancel
+                                </a>
+                            }
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-calendar-check me-1"></i> Book Appointment
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

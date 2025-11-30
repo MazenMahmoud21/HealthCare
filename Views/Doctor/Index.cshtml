@@ -5,27 +5,28 @@
     var isAdmin = role == "Admin";
 }
 
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2 class="text-success mb-0"><i class="bi bi-heart-pulse me-2"></i>Our Doctors</h2>
-            <p class="text-muted mb-0">Browse our qualified healthcare professionals</p>
+<div class="container-fluid px-4 py-4">
+    <!-- Page Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+        <div class="mb-3 mb-md-0">
+            <h1 class="page-title mb-1">Our Doctors</h1>
+            <p class="page-subtitle mb-0">Browse our qualified healthcare professionals</p>
         </div>
         @if (isAdmin)
         {
-            <a asp-action="Create" class="btn btn-success">
-                <i class="bi bi-person-plus-fill me-2"></i>Add New Doctor
+            <a asp-action="Create" class="btn btn-primary">
+                <i class="fas fa-user-md me-1"></i> Add Doctor
             </a>
         }
     </div>
 
     <!-- Search and Filter -->
     <div class="card mb-4">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
+        <div class="card-body py-3">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-4 col-lg-3">
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
                         <input type="text" class="form-control" id="searchInput" placeholder="Search doctors...">
                     </div>
                 </div>
@@ -48,46 +49,45 @@
     <!-- Doctors Grid -->
     @if (Model != null && Model.Any())
     {
-        <div class="row" id="doctorsGrid">
+        <div class="row g-3" id="doctorsGrid">
             @foreach (var doctor in Model)
             {
-                <div class="col-xl-3 col-lg-4 col-md-6 mb-4 doctor-card" data-specialization="@doctor.Specialization">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body text-center">
-                            <div class="avatar-circle bg-success text-white mx-auto mb-3">
+                <div class="col-xl-3 col-lg-4 col-md-6 doctor-card" data-specialization="@doctor.Specialization">
+                    <div class="card h-100">
+                        <div class="card-body text-center p-4">
+                            <div class="avatar avatar-lg mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.25rem; background: #D1FAE5; color: #059669;">
                                 @doctor.FirstName?.Substring(0, 1)@doctor.LastName?.Substring(0, 1)
                             </div>
-                            <h5 class="card-title mb-1">Dr. @doctor.FirstName @doctor.LastName</h5>
-                            <p class="text-muted mb-2">
-                                <span class="badge bg-info">@doctor.Specialization</span>
-                            </p>
-                            <hr>
-                            <div class="text-start">
-                                <p class="mb-1">
-                                    <i class="bi bi-envelope text-muted me-2"></i>
-                                    <small>@doctor.Email</small>
+                            <h5 class="card-title mb-1 fw-semibold">Dr. @doctor.FirstName @doctor.LastName</h5>
+                            <span class="badge bg-info mb-3">@doctor.Specialization</span>
+                            
+                            <div class="text-start border-top pt-3">
+                                <p class="mb-2 small">
+                                    <i class="fas fa-envelope text-muted me-2" style="width: 16px;"></i>
+                                    <span class="text-muted">@doctor.Email</span>
                                 </p>
-                                <p class="mb-1">
-                                    <i class="bi bi-telephone text-muted me-2"></i>
-                                    <small>@(doctor.Phone ?? "N/A")</small>
+                                <p class="mb-2 small">
+                                    <i class="fas fa-phone text-muted me-2" style="width: 16px;"></i>
+                                    <span class="text-muted">@(doctor.Phone ?? "—")</span>
                                 </p>
-                                <p class="mb-0">
-                                    <i class="bi bi-currency-dollar text-muted me-2"></i>
-                                    <small>Consultation Fee: <strong>$@doctor.ConsultationFee.ToString("F2")</strong></small>
+                                <p class="mb-0 small">
+                                    <i class="fas fa-dollar-sign text-muted me-2" style="width: 16px;"></i>
+                                    <span class="fw-semibold">$@doctor.ConsultationFee.ToString("F2")</span>
+                                    <span class="text-muted">/ visit</span>
                                 </p>
                             </div>
                         </div>
-                        <div class="card-footer bg-transparent">
+                        <div class="card-footer bg-transparent border-top p-3">
                             <div class="d-grid gap-2">
                                 @if (role == "Patient")
                                 {
                                     <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@doctor.Id" 
-                                       class="btn btn-primary">
-                                        <i class="bi bi-calendar-plus me-2"></i>Book Appointment
+                                       class="btn btn-primary btn-sm">
+                                        <i class="fas fa-calendar-plus me-1"></i> Book Appointment
                                     </a>
                                 }
-                                <a asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-outline-secondary">
-                                    <i class="bi bi-eye me-2"></i>View Profile
+                                <a asp-action="Details" asp-route-id="@doctor.Id" class="btn btn-ghost btn-sm">
+                                    <i class="fas fa-eye me-1"></i> View Profile
                                 </a>
                             </div>
                         </div>
@@ -95,44 +95,29 @@
                 </div>
             }
         </div>
-        <div class="text-center text-muted mt-3">
-            <span id="doctorCount">Showing @Model.Count() doctors</span>
+        <div class="text-center text-muted mt-4">
+            <span id="doctorCount" class="small">Showing @Model.Count() doctors</span>
         </div>
     }
     else
     {
-        <div class="text-center py-5">
-            <i class="bi bi-heart-pulse fs-1 text-muted"></i>
-            <h5 class="mt-3">No Doctors Found</h5>
-            <p class="text-muted">There are no registered doctors in the system yet.</p>
-            @if (isAdmin)
-            {
-                <a asp-action="Create" class="btn btn-success">
-                    <i class="bi bi-person-plus-fill me-2"></i>Add First Doctor
-                </a>
-            }
+        <div class="card">
+            <div class="card-body">
+                <div class="empty-state py-5">
+                    <i class="fas fa-user-md"></i>
+                    <h5>No Doctors Found</h5>
+                    <p>There are no registered doctors in the system yet.</p>
+                    @if (isAdmin)
+                    {
+                        <a asp-action="Create" class="btn btn-primary">
+                            <i class="fas fa-user-md me-1"></i> Add First Doctor
+                        </a>
+                    }
+                </div>
+            </div>
         </div>
     }
 </div>
-
-<style>
-    .avatar-circle {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-        font-weight: bold;
-    }
-    
-    .doctor-card .card:hover {
-        transform: translateY(-5px);
-        transition: transform 0.3s ease;
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-    }
-</style>
 
 @section Scripts {
     <script>

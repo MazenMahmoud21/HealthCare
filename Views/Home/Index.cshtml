@@ -1,125 +1,140 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home";
 }
 
-<!-- Hero Section -->
-<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center rounded-3" style="background: transparent;">
-    <!-- Animated Background Blobs -->
-    <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index: -1; overflow: hidden;">
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="position-absolute" style="width: 50%; top: -10%; left: -10%; opacity: 0.1; animation: float 6s ease-in-out infinite;">
-            <path fill="#0F766E" d="M44.7,-76.4C58.9,-69.2,71.8,-59.1,81.6,-46.6C91.4,-34.1,98.1,-19.2,95.8,-5.3C93.5,8.6,82.2,21.5,70.6,32.2C59,42.9,47.1,51.4,34.8,58.6C22.5,65.8,9.8,71.7,-1.8,74.8C-13.4,77.9,-23.9,78.2,-34.7,73.8C-45.5,69.4,-56.6,60.3,-65.6,49.6C-74.6,38.9,-81.5,26.6,-83.4,13.5C-85.3,0.4,-82.2,-13.5,-74.7,-25.2C-67.2,-36.9,-55.3,-46.4,-42.9,-54.3C-30.5,-62.2,-17.6,-68.5,-3.9,-61.8L9.8,-55.1Z" transform="translate(100 100)" />
-        </svg>
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="position-absolute" style="width: 40%; bottom: -10%; right: -10%; opacity: 0.1; animation: float 8s ease-in-out infinite reverse;">
-            <path fill="#0F766E" d="M41.3,-70.5C54.4,-63.9,66.4,-55.6,75.3,-44.7C84.2,-33.8,90,-20.3,88.6,-7.3C87.2,5.7,78.6,18.2,68.9,29.1C59.2,40,48.4,49.3,36.6,56.3C24.8,63.3,12,68,-0.6,69C-13.2,70,-26.1,67.3,-37.6,60.1C-49.1,52.9,-59.2,41.2,-66.8,28.1C-74.4,15,-79.5,0.5,-77.3,-12.8C-75.1,-26.1,-65.6,-38.2,-54.2,-47.6C-42.8,-57,-29.5,-63.7,-16.3,-66.5C-3.1,-69.3,10,-68.2,23.1,-67.1L36.2,-66Z" transform="translate(100 100)" />
-        </svg>
-    </div>
+@if (Context.Session.GetString("UserId") == null)
+{
+    <!-- Guest Landing Page -->
+    <div class="container-fluid px-4 py-4">
+        <!-- Welcome Banner -->
+        <div class="card welcome-banner mb-4">
+            <div class="card-body p-4 p-lg-5">
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <span class="badge bg-white text-primary mb-3">Healthcare Platform</span>
+                        <h1 class="display-5 fw-bold text-white mb-3">Your Health, Our Priority</h1>
+                        <p class="text-white-50 mb-4 lead">Manage appointments, access medical records, and connect with healthcare professionals — all in one secure platform.</p>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a class="btn btn-light btn-lg px-4" asp-controller="Account" asp-action="Register">
+                                Get Started <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                            <a class="btn btn-outline-light btn-lg px-4" asp-controller="Account" asp-action="Login">
+                                Sign In
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+                        <div class="hero-illustration">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="col-md-8 p-lg-5 mx-auto my-5 fade-in position-relative" style="z-index: 1;">
-        <div class="mb-4 animate-float">
-            <div class="d-inline-block p-3 rounded-circle glass-panel shadow-sm">
-                <i class="fas fa-heartbeat fa-4x text-gradient"></i>
+        <!-- Features Section -->
+        <div class="mb-4">
+            <div class="d-flex align-items-center mb-4">
+                <h2 class="h5 fw-semibold mb-0">Why Choose Us</h2>
+                <div class="flex-grow-1 ms-3 border-bottom"></div>
+            </div>
+            
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body p-4">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <h5 class="fw-semibold mb-2">Expert Doctors</h5>
+                            <p class="text-muted mb-0">Access qualified healthcare professionals across various specializations.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body p-4">
+                            <div class="feature-icon feature-icon-success mb-3">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <h5 class="fw-semibold mb-2">Easy Scheduling</h5>
+                            <p class="text-muted mb-0">Book, reschedule, or cancel appointments with just a few clicks.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body p-4">
+                            <div class="feature-icon feature-icon-info mb-3">
+                                <i class="fas fa-file-medical-alt"></i>
+                            </div>
+                            <h5 class="fw-semibold mb-2">Digital Records</h5>
+                            <p class="text-muted mb-0">Securely store and access your complete medical history anytime.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body p-4">
+                            <div class="feature-icon feature-icon-warning mb-3">
+                                <i class="fas fa-prescription-bottle-alt"></i>
+                            </div>
+                            <h5 class="fw-semibold mb-2">Prescriptions</h5>
+                            <p class="text-muted mb-0">View and manage your prescriptions digitally in one place.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body p-4">
+                            <div class="feature-icon feature-icon-danger mb-3">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h5 class="fw-semibold mb-2">Secure & Private</h5>
+                            <p class="text-muted mb-0">Your health data is protected with enterprise-grade security.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card feature-card h-100">
+                        <div class="card-body p-4">
+                            <div class="feature-icon feature-icon-secondary mb-3">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h5 class="fw-semibold mb-2">24/7 Access</h5>
+                            <p class="text-muted mb-0">Access your healthcare information anytime, anywhere you need.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <h1 class="display-3 fw-bold mb-3">Healthcare <span class="text-gradient">Reimagined</span></h1>
-        <p class="lead fw-normal text-muted mb-5" style="font-size: 1.25rem;">
-            Experience the future of medical management. Seamless appointments, secure records, and world-class care at your fingertips.
-        </p>
-        
-        @if (Context.Session.GetString("UserId") == null)
-        {
-            <div class="d-flex gap-3 justify-content-center">
-                <a class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm hover-scale" asp-controller="Account" asp-action="Register">
-                    Get Started <i class="fas fa-arrow-right ms-2"></i>
-                </a>
-                <a class="btn btn-outline-primary btn-lg px-5 py-3 rounded-pill shadow-sm hover-scale glass-panel border-0" asp-controller="Account" asp-action="Login">
-                    Sign In
-                </a>
-            </div>
-        }
-        else
-        {
-            <a class="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow-sm hover-scale" asp-controller="Appointment" asp-action="Create">
-                Book Appointment <i class="fas fa-calendar-plus ms-2"></i>
-            </a>
-        }
-    </div>
-</div>
 
-<!-- Features Section -->
-<div class="container px-4 py-5" id="features">
-    <div class="text-center mb-5">
-        <h2 class="display-5 fw-bold">Why Choose Us?</h2>
-        <p class="lead text-muted">Comprehensive care management for everyone.</p>
-    </div>
-    
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-        <div class="col">
-            <div class="glass-card h-100 p-4 text-center hover-scale">
-                <div class="icon mb-4 text-primary">
-                    <i class="fas fa-user-md fa-3x"></i>
-                </div>
-                <h3 class="fs-2 mb-3">Expert Doctors</h3>
-                <p class="text-muted mb-4">Access to a network of top-tier medical professionals across various specializations.</p>
-                <a href="#" class="btn btn-link text-decoration-none stretched-link">
-                    Find a doctor <i class="fas fa-chevron-right small ms-1"></i>
-                </a>
-            </div>
-        </div>
-        <div class="col">
-            <div class="glass-card h-100 p-4 text-center hover-scale">
-                <div class="icon mb-4 text-primary">
-                    <i class="fas fa-calendar-check fa-3x"></i>
-                </div>
-                <h3 class="fs-2 mb-3">Easy Scheduling</h3>
-                <p class="text-muted mb-4">Book, reschedule, or cancel appointments instantly with our real-time calendar system.</p>
-                <a href="#" class="btn btn-link text-decoration-none stretched-link">
-                    View calendar <i class="fas fa-chevron-right small ms-1"></i>
-                </a>
-            </div>
-        </div>
-        <div class="col">
-            <div class="glass-card h-100 p-4 text-center hover-scale">
-                <div class="icon mb-4 text-primary">
-                    <i class="fas fa-file-medical fa-3x"></i>
-                </div>
-                <h3 class="fs-2 mb-3">Digital Records</h3>
-                <p class="text-muted mb-4">Securely store and access your medical history, prescriptions, and lab results anywhere.</p>
-                <a href="#" class="btn btn-link text-decoration-none stretched-link">
-                    Learn more <i class="fas fa-chevron-right small ms-1"></i>
+        <!-- CTA Section -->
+        <div class="card cta-card">
+            <div class="card-body p-4 p-lg-5 text-center">
+                <h3 class="fw-bold mb-2">Ready to take control of your health?</h3>
+                <p class="text-muted mb-4">Join thousands of patients who trust our platform for their healthcare needs.</p>
+                <a class="btn btn-primary btn-lg px-5" asp-controller="Account" asp-action="Register">
+                    Create Free Account
                 </a>
             </div>
         </div>
     </div>
-</div>
-
-<!-- Stats Section -->
-<div class="py-5 mt-5" style="background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));">
-    <div class="container">
-        <div class="row text-center g-4">
-            <div class="col-md-3">
-                <div class="glass-panel bg-white bg-opacity-10 p-4 rounded-3 text-white">
-                    <h2 class="display-4 fw-bold mb-0">10k+</h2>
-                    <p class="h5 opacity-75 mt-2">Happy Patients</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="glass-panel bg-white bg-opacity-10 p-4 rounded-3 text-white">
-                    <h2 class="display-4 fw-bold mb-0">500+</h2>
-                    <p class="h5 opacity-75 mt-2">Expert Doctors</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="glass-panel bg-white bg-opacity-10 p-4 rounded-3 text-white">
-                    <h2 class="display-4 fw-bold mb-0">24/7</h2>
-                    <p class="h5 opacity-75 mt-2">Support Available</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="glass-panel bg-white bg-opacity-10 p-4 rounded-3 text-white">
-                    <h2 class="display-4 fw-bold mb-0">99%</h2>
-                    <p class="h5 opacity-75 mt-2">Satisfaction Rate</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+}
+else
+{
+    <!-- Redirect logged in users to their specific dashboard -->
+    var role = Context.Session.GetString("Role");
+    if (role == "Admin")
+    {
+        Context.Response.Redirect("/Home/AdminDashboard");
+    }
+    else if (role == "Doctor")
+    {
+        Context.Response.Redirect("/Home/DoctorDashboard");
+    }
+    else if (role == "Patient")
+    {
+        Context.Response.Redirect("/Home/PatientDashboard");
+    }
+}

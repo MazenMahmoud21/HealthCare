@@ -4,17 +4,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Healthcare System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/site_new.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/HealthcareSystem.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-            <div class="container-fluid">
-                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
-                    <i class="bi bi-hospital me-2"></i>Healthcare System
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-fluid px-4">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-hospital"></i>Healthcare
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" 
                         aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,32 +35,32 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="AdminDashboard">
-                                    <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                                    <i class="fas fa-th-large me-1"></i>Dashboard
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Patient" asp-action="Index">
-                                    <i class="bi bi-people me-1"></i>Patients
+                                    <i class="fas fa-users me-1"></i>Patients
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Doctor" asp-action="Index">
-                                    <i class="bi bi-heart-pulse me-1"></i>Doctors
+                                    <i class="fas fa-user-md me-1"></i>Doctors
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Appointment" asp-action="Index">
-                                    <i class="bi bi-calendar-check me-1"></i>Appointments
+                                    <i class="fas fa-calendar-alt me-1"></i>Appointments
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="MedicalRecord" asp-action="Index">
-                                    <i class="bi bi-file-medical me-1"></i>Records
+                                    <i class="fas fa-file-medical me-1"></i>Records
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Prescription" asp-action="Index">
-                                    <i class="bi bi-prescription me-1"></i>Prescriptions
+                                    <i class="fas fa-prescription me-1"></i>Prescriptions
                                 </a>
                             </li>
                         }
@@ -64,27 +68,27 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="DoctorDashboard">
-                                    <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                                    <i class="fas fa-th-large me-1"></i>Dashboard
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Doctor" asp-action="Dashboard">
-                                    <i class="bi bi-calendar-check me-1"></i>My Appointments
+                                    <i class="fas fa-calendar-check me-1"></i>My Appointments
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Patient" asp-action="Index">
-                                    <i class="bi bi-people me-1"></i>Patients
+                                    <i class="fas fa-users me-1"></i>Patients
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="MedicalRecord" asp-action="Index">
-                                    <i class="bi bi-file-medical me-1"></i>Medical Records
+                                    <i class="fas fa-file-medical me-1"></i>Medical Records
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Prescription" asp-action="Index">
-                                    <i class="bi bi-prescription me-1"></i>Prescriptions
+                                    <i class="fas fa-prescription me-1"></i>Prescriptions
                                 </a>
                             </li>
                         }
@@ -92,27 +96,27 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="PatientDashboard">
-                                    <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                                    <i class="fas fa-th-large me-1"></i>Dashboard
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Doctor" asp-action="Index">
-                                    <i class="bi bi-search me-1"></i>Find Doctors
+                                    <i class="fas fa-search me-1"></i>Find Doctors
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Appointment" asp-action="Create">
-                                    <i class="bi bi-calendar-plus me-1"></i>Book Appointment
+                                    <i class="fas fa-calendar-plus me-1"></i>Book
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="MedicalRecord" asp-action="MyRecords">
-                                    <i class="bi bi-file-medical me-1"></i>My Records
+                                    <i class="fas fa-file-medical me-1"></i>Records
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Prescription" asp-action="MyPrescriptions">
-                                    <i class="bi bi-prescription me-1"></i>My Prescriptions
+                                    <i class="fas fa-prescription me-1"></i>Prescriptions
                                 </a>
                             </li>
                         }
@@ -120,17 +124,12 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="Index">
-                                    <i class="bi bi-house me-1"></i>Home
+                                    <i class="fas fa-home me-1"></i>Home
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Doctor" asp-action="Index">
-                                    <i class="bi bi-heart-pulse me-1"></i>Our Doctors
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="Privacy">
-                                    <i class="bi bi-shield-check me-1"></i>Privacy
+                                    <i class="fas fa-user-md me-1"></i>Doctors
                                 </a>
                             </li>
                         }
@@ -142,15 +141,15 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" 
                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-person-circle me-1"></i>
-                                    @(role == "Admin" ? "Administrator" : role)
+                                    <i class="fas fa-user-circle me-1"></i>
+                                    @(role == "Admin" ? "Admin" : role)
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     @if (role == "Patient")
                                     {
                                         <li>
                                             <a class="dropdown-item" asp-controller="Patient" asp-action="MyProfile">
-                                                <i class="bi bi-person me-2"></i>My Profile
+                                                <i class="fas fa-user me-2"></i>My Profile
                                             </a>
                                         </li>
                                     }
@@ -158,7 +157,7 @@
                                     {
                                         <li>
                                             <a class="dropdown-item" asp-controller="Doctor" asp-action="MyProfile">
-                                                <i class="bi bi-person me-2"></i>My Profile
+                                                <i class="fas fa-user me-2"></i>My Profile
                                             </a>
                                         </li>
                                     }
@@ -166,8 +165,8 @@
                                     <li>
                                         <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                                             @Html.AntiForgeryToken()
-                                            <button type="submit" class="dropdown-item text-danger" style="cursor: pointer; background: none; border: none; width: 100%; text-align: left;">
-                                                <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="fas fa-sign-out-alt me-2"></i>Logout
                                             </button>
                                         </form>
                                     </li>
@@ -178,12 +177,12 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Account" asp-action="Login">
-                                    <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                                    <i class="fas fa-sign-in-alt me-1"></i>Login
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-outline-light btn-sm ms-2 px-3" asp-controller="Account" asp-action="Register">
-                                    <i class="bi bi-person-plus me-1"></i>Register
+                            <li class="nav-item ms-2 d-flex align-items-center">
+                                <a class="btn btn-primary px-3" asp-controller="Account" asp-action="Register">
+                                    Register
                                 </a>
                             </li>
                         }
@@ -193,18 +192,13 @@
         </nav>
     </header>
 
-    <div class="container-fluid py-4">
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main">
+        @RenderBody()
+    </main>
 
-    <footer class="border-top footer text-muted bg-light py-3 mt-auto">
+    <footer>
         <div class="container text-center">
-            <span>&copy; 2025 Healthcare System - </span>
-            <a asp-controller="Home" asp-action="Privacy" class="text-decoration-none">Privacy Policy</a>
-            <span class="mx-2">|</span>
-            <span class="text-muted">Built with ASP.NET Core MVC</span>
+            <span>&copy; 2025 Healthcare System. All rights reserved.</span>
         </div>
     </footer>
 

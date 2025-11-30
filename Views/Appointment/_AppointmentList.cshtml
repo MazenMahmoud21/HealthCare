@@ -2,68 +2,85 @@
 
 @if (Model != null && Model.Any())
 {
-    <div class="row">
-        @foreach (var appointment in Model)
+    <div class="row g-3">
+        @foreach (var appointment in Model.OrderByDescending(a => a.AppointmentDate))
         {
             var statusClass = appointment.Status switch
             {
-                "Scheduled" => "primary",
-                "Completed" => "success",
-                "Cancelled" => "danger",
-                _ => "secondary"
+                "Scheduled" => "status-scheduled",
+                "Completed" => "status-completed",
+                "Cancelled" => "status-cancelled",
+                _ => "bg-secondary"
             };
             var isPast = appointment.AppointmentDate < DateTime.Now && appointment.Status == "Scheduled";
             
-            <div class="col-lg-6 mb-3">
+            <div class="col-lg-6">
                 <div class="card h-100 @(isPast ? "border-warning" : "")">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span class="badge bg-@statusClass">@appointment.Status</span>
-                        @if (isPast)
-                        {
-                            <span class="badge bg-warning text-dark">Past Due</span>
-                        }
-                    </div>
-                    <div class="card-body">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="avatar-circle bg-success text-white me-3">
-                                @appointment.Doctor?.FirstName?.Substring(0, 1)@appointment.Doctor?.LastName?.Substring(0, 1)
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="avatar me-3" style="background: #D1FAE5; color: #059669;">
+                                    @appointment.Doctor?.FirstName?.Substring(0, 1)@appointment.Doctor?.LastName?.Substring(0, 1)
+                                </div>
+                                <div>
+                                    <h6 class="mb-0 fw-semibold">Dr. @appointment.Doctor?.FirstName @appointment.Doctor?.LastName</h6>
+                                    <span class="badge bg-info small">@appointment.Doctor?.Specialization</span>
+                                </div>
                             </div>
-                            <div>
-                                <h6 class="mb-0">Dr. @appointment.Doctor?.FirstName @appointment.Doctor?.LastName</h6>
-                                <small class="text-info">@appointment.Doctor?.Specialization</small>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="row">
-                            <div class="col-6">
-                                <small class="text-muted"><i class="bi bi-calendar me-1"></i>Date</small>
-                                <p class="mb-0 fw-bold">@appointment.AppointmentDate.ToString("MMM dd, yyyy")</p>
-                            </div>
-                            <div class="col-6">
-                                <small class="text-muted"><i class="bi bi-clock me-1"></i>Time</small>
-                                <p class="mb-0 fw-bold">@appointment.AppointmentDate.ToString("hh:mm tt")</p>
+                            <div class="d-flex gap-1">
+                                @if (isPast)
+                                {
+                                    <span class="badge bg-warning">Past Due</span>
+                                }
+                                <span class="badge @statusClass">@appointment.Status</span>
                             </div>
                         </div>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="info-card" style="background: var(--bg-secondary); padding: 0.75rem;">
+                                    <div class="info-icon" style="background: #E0E7FF; color: #4F46E5; width: 32px; height: 32px; font-size: 0.75rem;">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block" style="font-size: 0.7rem;">Date</small>
+                                        <span class="fw-semibold small">@appointment.AppointmentDate.ToString("MMM dd, yyyy")</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="info-card" style="background: var(--bg-secondary); padding: 0.75rem;">
+                                    <div class="info-icon" style="background: #CFFAFE; color: #0891B2; width: 32px; height: 32px; font-size: 0.75rem;">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted d-block" style="font-size: 0.7rem;">Time</small>
+                                        <span class="fw-semibold small">@appointment.AppointmentDate.ToString("hh:mm tt")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         @if (!string.IsNullOrEmpty(appointment.Reason))
                         {
-                            <div class="mt-3">
-                                <small class="text-muted"><i class="bi bi-chat-left-text me-1"></i>Reason</small>
-                                <p class="mb-0">@appointment.Reason</p>
+                            <div class="border-top pt-2">
+                                <small class="text-muted d-block mb-1"><i class="fas fa-comment-medical me-1"></i>Reason</small>
+                                <p class="mb-0 small text-muted">@(appointment.Reason.Length > 80 ? appointment.Reason.Substring(0, 80) + "..." : appointment.Reason)</p>
                             </div>
                         }
                     </div>
-                    <div class="card-footer bg-transparent">
+                    <div class="card-footer bg-transparent border-top p-3">
                         <div class="d-flex justify-content-between">
-                            <a asp-action="Details" asp-route-id="@appointment.Id" class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-eye me-1"></i>Details
+                            <a asp-action="Details" asp-route-id="@appointment.Id" class="btn btn-ghost btn-sm">
+                                <i class="fas fa-eye me-1"></i> Details
                             </a>
                             @if (appointment.Status == "Scheduled")
                             {
                                 <form asp-action="Cancel" asp-route-id="@appointment.Id" method="post" 
                                       onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
                                     @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                                        <i class="bi bi-x-circle me-1"></i>Cancel
+                                    <button type="submit" class="btn btn-ghost btn-sm text-danger">
+                                        <i class="fas fa-times me-1"></i> Cancel
                                     </button>
                                 </form>
                             }
@@ -76,21 +93,13 @@
 }
 else
 {
-    <div class="text-center py-4 text-muted">
-        <i class="bi bi-calendar-x fs-1"></i>
-        <p class="mt-2">No appointments in this category</p>
+    <div class="card">
+        <div class="card-body">
+            <div class="empty-state py-4">
+                <i class="fas fa-calendar-times"></i>
+                <h5>No Appointments</h5>
+                <p>No appointments in this category</p>
+            </div>
+        </div>
     </div>
 }
-
-<style>
-    .avatar-circle {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.85rem;
-        font-weight: bold;
-    }
-</style>
