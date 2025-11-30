@@ -14,7 +14,7 @@ A modern, full-featured healthcare management system built with ASP.NET Core MVC
 - **Doctor** - Patient management, appointments, prescriptions
 - **Patient** - Book appointments, view records and prescriptions
 
-### 📋 Core Modules
+### Core Modules
 
 | Module | Description |
 |--------|-------------|
@@ -138,5 +138,5 @@ HealthCare/
 ---
 
 <p align="center">
-  Made with ❤️ in Egypt 🇪🇬
+  Made with ❤️
 </p>
