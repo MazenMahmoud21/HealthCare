@@ -1,0 +1,193 @@
+@model HealthcareSystem.Models.Prescription
+@{
+    ViewData["Title"] = "Prescription Details";
+    var role = Context.Session.GetString("Role");
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    @if (role == "Patient")
+                    {
+                        <li class="breadcrumb-item"><a asp-action="MyPrescriptions">My Prescriptions</a></li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item"><a asp-action="Index">Prescriptions</a></li>
+                    }
+                    <li class="breadcrumb-item active">Prescription Details</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row">
+        <!-- Main Prescription Info -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-prescription me-2"></i>Prescription Details</h5>
+                    <span class="badge bg-light text-dark">@Model.PrescriptionDate.ToString("MMMM dd, yyyy")</span>
+                </div>
+                <div class="card-body">
+                    <!-- Medicine Information -->
+                    <div class="text-center mb-4 py-3 bg-light rounded">
+                        <i class="bi bi-capsule fs-1 text-info"></i>
+                        <h3 class="mt-2 text-info">@Model.MedicineName</h3>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100 bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted">
+                                        <i class="bi bi-clock me-1"></i>Dosage
+                                    </h6>
+                                    <h4 class="mb-0">@Model.Dosage</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100 bg-light">
+                                <div class="card-body text-center">
+                                    <h6 class="text-muted">
+                                        <i class="bi bi-calendar3 me-1"></i>Duration
+                                    </h6>
+                                    <h4 class="mb-0">@Model.Duration</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Instructions))
+                    {
+                        <div class="alert alert-warning">
+                            <h6 class="alert-heading"><i class="bi bi-exclamation-triangle me-2"></i>Special Instructions</h6>
+                            <p class="mb-0">@Model.Instructions</p>
+                        </div>
+                    }
+
+                    <!-- Related Medical Record -->
+                    @if (Model.MedicalRecord != null)
+                    {
+                        <div class="mt-4">
+                            <h6 class="text-muted border-bottom pb-2">
+                                <i class="bi bi-file-medical me-2"></i>Related Medical Record
+                            </h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <small class="text-muted">Diagnosis</small>
+                                    <p class="mb-0 fw-bold">@(Model.MedicalRecord.Diagnosis ?? "N/A")</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <small class="text-muted">Visit Date</small>
+                                    <p class="mb-0">@Model.MedicalRecord.VisitDate.ToString("MMMM dd, yyyy")</p>
+                                </div>
+                            </div>
+                            <a asp-controller="MedicalRecord" asp-action="Details" asp-route-id="@Model.MedicalRecordId"
+                               class="btn btn-outline-success btn-sm mt-2">
+                                <i class="bi bi-eye me-1"></i>View Full Record
+                            </a>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        @if (role == "Patient")
+                        {
+                            <a asp-action="MyPrescriptions" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Back to Prescriptions
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Back to Prescriptions
+                            </a>
+                        }
+                        <div>
+                            <a asp-action="Print" asp-route-id="@Model.Id" class="btn btn-outline-secondary" target="_blank">
+                                <i class="bi bi-printer me-2"></i>Print
+                            </a>
+                            @if (role == "Doctor")
+                            {
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                                    <i class="bi bi-pencil me-2"></i>Edit
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Info -->
+        <div class="col-lg-4">
+            <!-- Patient Info -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0"><i class="bi bi-person me-2"></i>Patient</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-circle bg-primary text-white me-3">
+                            @Model.Patient?.FirstName?.Substring(0, 1)@Model.Patient?.LastName?.Substring(0, 1)
+                        </div>
+                        <div>
+                            <h6 class="mb-0">@Model.Patient?.FirstName @Model.Patient?.LastName</h6>
+                            <small class="text-muted">@Model.Patient?.User?.Email</small>
+                        </div>
+                    </div>
+                    @if (role != "Patient")
+                    {
+                        <a asp-controller="Patient" asp-action="Details" asp-route-id="@Model.PatientId"
+                           class="btn btn-outline-primary btn-sm w-100 mt-3">
+                            <i class="bi bi-eye me-1"></i>View Patient Profile
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <!-- Doctor Info -->
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0"><i class="bi bi-heart-pulse me-2"></i>Prescribing Doctor</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar-circle bg-success text-white me-3">
+                            @Model.Doctor?.FirstName?.Substring(0, 1)@Model.Doctor?.LastName?.Substring(0, 1)
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Dr. @Model.Doctor?.FirstName @Model.Doctor?.LastName</h6>
+                            <span class="badge bg-info">@Model.Doctor?.Specialization</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-circle {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+</style>

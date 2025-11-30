@@ -78,8 +78,8 @@ namespace HealthcareSystem.Controllers
         // -------------------------------------
         public IActionResult Details(string id)
         {
-            var role = HttpContext.Session.GetString("Role");
-            string userId = HttpContext.Session.GetString("UserId");
+            var role = HttpContext.Session.GetString("Role") ?? string.Empty;
+            string userId = HttpContext.Session.GetString("UserId") ?? string.Empty;
 
             var patient = _context.Patients
                 .Include(p => p.User)
@@ -112,7 +112,7 @@ namespace HealthcareSystem.Controllers
             if (HttpContext.Session.GetString("Role") != "Patient")
                 return Unauthorized();
 
-            string userId = HttpContext.Session.GetString("UserId");
+            string userId = HttpContext.Session.GetString("UserId") ?? string.Empty;
 
             var patient = _context.Patients.FirstOrDefault(p => p.UserId == userId);
 
@@ -137,6 +137,26 @@ namespace HealthcareSystem.Controllers
             patient.BloodGroup = updated.BloodGroup;
 
             _context.SaveChanges();
+
+            return RedirectToAction("Details", new { id = patient.Id });
+        }
+
+        // -------------------------------------
+        // MY PROFILE (Patient views own profile)
+        // -------------------------------------
+        public IActionResult MyProfile()
+        {
+            if (HttpContext.Session.GetString("Role") != "Patient")
+                return RedirectToAction("Index", "Home");
+
+            string userId = HttpContext.Session.GetString("UserId") ?? string.Empty;
+
+            var patient = _context.Patients
+                .Include(p => p.User)
+                .FirstOrDefault(p => p.UserId == userId);
+
+            if (patient == null)
+                return RedirectToAction("Index", "Home");
 
             return RedirectToAction("Details", new { id = patient.Id });
         }

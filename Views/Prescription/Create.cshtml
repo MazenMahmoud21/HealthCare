@@ -1,0 +1,172 @@
+@model HealthcareSystem.Models.Prescription
+@{
+    ViewData["Title"] = "Create Prescription";
+    var record = ViewBag.Record as HealthcareSystem.Models.MedicalRecord;
+    var doctor = ViewBag.Doctor as HealthcareSystem.Models.Doctor;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        @if (record == null)
+        {
+            <!-- Show record selection -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="bi bi-prescription me-2"></i>Create Prescription</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="text-muted mb-4">Select a Medical Record</h5>
+                    
+                    @if (ViewBag.Records != null && ((IEnumerable<HealthcareSystem.Models.MedicalRecord>)ViewBag.Records).Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var rec in (IEnumerable<HealthcareSystem.Models.MedicalRecord>)ViewBag.Records)
+                            {
+                                <a asp-action="Create" asp-route-recordId="@rec.Id" 
+                                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">@rec.Patient?.FirstName @rec.Patient?.LastName</h6>
+                                        <small class="text-muted">
+                                            @rec.VisitDate.ToString("MMM dd, yyyy") - @(rec.Diagnosis ?? "No diagnosis")
+                                        </small>
+                                    </div>
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-file-earmark-medical fs-1"></i>
+                            <p class="mt-2">No medical records available.</p>
+                            <a asp-controller="MedicalRecord" asp-action="Create" class="btn btn-outline-primary">
+                                <i class="bi bi-plus-circle me-2"></i>Create Medical Record First
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Prescription Form -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h4 class="mb-0"><i class="bi bi-prescription me-2"></i>Create Prescription</h4>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Record Info -->
+                    <div class="alert alert-info mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="mb-1"><i class="bi bi-person me-2"></i>Patient</h6>
+                                <strong>@record.Patient?.FirstName @record.Patient?.LastName</strong>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="mb-1"><i class="bi bi-clipboard2-pulse me-2"></i>Diagnosis</h6>
+                                <strong>@(record.Diagnosis ?? "N/A")</strong>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <h6 class="mb-1"><i class="bi bi-calendar me-2"></i>Visit Date</h6>
+                            <strong>@record.VisitDate.ToString("MMMM dd, yyyy")</strong>
+                        </div>
+                    </div>
+
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="MedicalRecordId" value="@record.Id" />
+                        <input type="hidden" asp-for="PatientId" value="@record.PatientId" />
+                        <input type="hidden" asp-for="DoctorId" value="@record.DoctorId" />
+
+                        <h5 class="text-muted mb-3 border-bottom pb-2">
+                            <i class="bi bi-capsule me-2"></i>Medication Details
+                        </h5>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label asp-for="MedicineName" class="form-label">Medicine Name *</label>
+                                <input asp-for="MedicineName" class="form-control" placeholder="e.g., Amoxicillin 500mg" required />
+                                <span asp-validation-for="MedicineName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Dosage" class="form-label">Dosage *</label>
+                                <input asp-for="Dosage" class="form-control" placeholder="e.g., 1 tablet, 3 times daily" required />
+                                <span asp-validation-for="Dosage" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="Duration" class="form-label">Duration *</label>
+                                <input asp-for="Duration" class="form-control" placeholder="e.g., 7 days" required />
+                                <span asp-validation-for="Duration" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Instructions" class="form-label">
+                                <i class="bi bi-info-circle me-1"></i>Special Instructions
+                            </label>
+                            <textarea asp-for="Instructions" class="form-control" rows="3" 
+                                      placeholder="e.g., Take after meals. Avoid alcohol. Complete the full course."></textarea>
+                            <span asp-validation-for="Instructions" class="text-danger"></span>
+                        </div>
+
+                        <!-- Common Medications Quick Add -->
+                        <div class="mb-4">
+                            <label class="form-label text-muted">Quick Add Common Medications</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="button" class="btn btn-outline-secondary btn-sm quick-med" 
+                                        data-name="Paracetamol 500mg" data-dosage="1 tablet, every 6 hours as needed">
+                                    Paracetamol
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm quick-med" 
+                                        data-name="Ibuprofen 400mg" data-dosage="1 tablet, 3 times daily after meals">
+                                    Ibuprofen
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm quick-med" 
+                                        data-name="Amoxicillin 500mg" data-dosage="1 capsule, 3 times daily">
+                                    Amoxicillin
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm quick-med" 
+                                        data-name="Omeprazole 20mg" data-dosage="1 capsule, once daily before breakfast">
+                                    Omeprazole
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm quick-med" 
+                                        data-name="Metformin 500mg" data-dosage="1 tablet, twice daily with meals">
+                                    Metformin
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="MedicalRecord" asp-action="Details" asp-route-id="@record.Id" 
+                               class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Back to Record
+                            </a>
+                            <button type="submit" class="btn btn-info">
+                                <i class="bi bi-check-circle me-2"></i>Create Prescription
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.quick-med').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.getElementById('MedicineName').value = this.dataset.name;
+                    document.getElementById('Dosage').value = this.dataset.dosage;
+                });
+            });
+        });
+    </script>
+}

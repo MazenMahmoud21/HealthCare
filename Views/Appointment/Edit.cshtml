@@ -1,0 +1,121 @@
+@model HealthcareSystem.Models.Appointment
+@{
+    ViewData["Title"] = "Edit Appointment";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0"><i class="bi bi-pencil me-2"></i>Edit Appointment</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Edit" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="CreatedAt" />
+
+                    <!-- Patient Selection -->
+                    <h5 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-person me-2"></i>Patient
+                    </h5>
+                    
+                    <div class="mb-4">
+                        <label asp-for="PatientId" class="form-label">Patient *</label>
+                        <select asp-for="PatientId" class="form-select" required>
+                            <option value="">-- Select Patient --</option>
+                            @if (ViewBag.Patients != null)
+                            {
+                                @foreach (var patient in (IEnumerable<HealthcareSystem.Models.Patient>)ViewBag.Patients)
+                                {
+                                    <option value="@patient.Id" selected="@(patient.Id == Model.PatientId)">
+                                        @patient.FirstName @patient.LastName (@patient.User?.Email)
+                                    </option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="PatientId" class="text-danger"></span>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Doctor Selection -->
+                    <h5 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-heart-pulse me-2"></i>Doctor
+                    </h5>
+
+                    <div class="mb-4">
+                        <label asp-for="DoctorId" class="form-label">Doctor *</label>
+                        <select asp-for="DoctorId" class="form-select" required>
+                            <option value="">-- Select Doctor --</option>
+                            @if (ViewBag.Doctors != null)
+                            {
+                                @foreach (var doctor in (IEnumerable<HealthcareSystem.Models.Doctor>)ViewBag.Doctors)
+                                {
+                                    <option value="@doctor.Id" selected="@(doctor.Id == Model.DoctorId)">
+                                        Dr. @doctor.FirstName @doctor.LastName - @doctor.Specialization
+                                    </option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="DoctorId" class="text-danger"></span>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Appointment Details -->
+                    <h5 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-calendar-event me-2"></i>Appointment Details
+                    </h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="AppointmentDate" class="form-label">Date & Time *</label>
+                            <input asp-for="AppointmentDate" type="datetime-local" class="form-control" required />
+                            <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Status" class="form-label">Status *</label>
+                            <select asp-for="Status" class="form-select" required>
+                                <option value="Scheduled">Scheduled</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Reason" class="form-label">Reason for Visit</label>
+                        <textarea asp-for="Reason" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Reason" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Notes" class="form-label">Additional Notes</label>
+                        <textarea asp-for="Notes" class="form-control" rows="2"></textarea>
+                        <span asp-validation-for="Notes" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-2"></i>Back to List
+                        </a>
+                        <div>
+                            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-info me-2">
+                                <i class="bi bi-eye me-2"></i>View Details
+                            </a>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-check-circle me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -11,33 +11,33 @@ namespace HealthcareSystem.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
-        public string PatientId { get; set; }
+        public string PatientId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(PatientId))]
-        public Patient Patient { get; set; }
+        public Patient Patient { get; set; } = null!;
 
         [Required]
-        public string DoctorId { get; set; }
+        public string DoctorId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(DoctorId))]
-        public Doctor Doctor { get; set; }
+        public Doctor Doctor { get; set; } = null!;
 
         [Required]
-        public string AppointmentId { get; set; }
+        public string AppointmentId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(AppointmentId))]
-        public Appointment Appointment { get; set; }
+        public Appointment Appointment { get; set; } = null!;
 
         public DateTime VisitDate { get; set; } = DateTime.Now;
 
-        public string Diagnosis { get; set; }
-        public string Symptoms { get; set; }
-        public string Treatment { get; set; }
-        public string Notes { get; set; }
+        public string Diagnosis { get; set; } = string.Empty;
+        public string Symptoms { get; set; } = string.Empty;
+        public string Treatment { get; set; } = string.Empty;
+        public string Notes { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // One-to-Many
-        public ICollection<Prescription> Prescriptions { get; set; }
+        public ICollection<Prescription>? Prescriptions { get; set; }
     }
 }

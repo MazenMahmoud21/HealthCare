@@ -10,28 +10,28 @@ namespace HealthcareSystem.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
-        public string PatientId { get; set; }
+        public string PatientId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(PatientId))]
-        public Patient Patient { get; set; }
+        public Patient Patient { get; set; } = null!;
 
         [Required]
-        public string DoctorId { get; set; }
+        public string DoctorId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(DoctorId))]
-        public Doctor Doctor { get; set; }
+        public Doctor Doctor { get; set; } = null!;
 
         public DateTime AppointmentDate { get; set; }
 
         [StringLength(20)]
-        public string Status { get; set; }   // Pending, Completed, Cancelled
+        public string Status { get; set; } = string.Empty;
 
-        public string Reason { get; set; }
-        public string Notes { get; set; }
+        public string Reason { get; set; } = string.Empty;
+        public string Notes { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // One-to-One
-        public MedicalRecord MedicalRecord { get; set; }
+        public MedicalRecord? MedicalRecord { get; set; }
     }
 }

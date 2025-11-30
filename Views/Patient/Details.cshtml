@@ -1,0 +1,269 @@
+@model HealthcareSystem.Models.Patient
+@{
+    ViewData["Title"] = $"Patient: {Model.FirstName} {Model.LastName}";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index">Patients</a></li>
+                    <li class="breadcrumb-item active">@Model.FirstName @Model.LastName</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Patient Info Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-person-circle me-2"></i>Patient Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div class="avatar-large bg-primary text-white mx-auto mb-3">
+                            @Model.FirstName?.Substring(0, 1)@Model.LastName?.Substring(0, 1)
+                        </div>
+                        <h4 class="mb-1">@Model.FirstName @Model.LastName</h4>
+                        <p class="text-muted mb-0">@Model.User?.Email</p>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <small class="text-muted d-block">Date of Birth</small>
+                            <strong>@Model.DateOfBirth.ToString("MMM dd, yyyy")</strong>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <small class="text-muted d-block">Age</small>
+                            <strong>@((DateTime.Now.Year - Model.DateOfBirth.Year)) years</strong>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <small class="text-muted d-block">Gender</small>
+                            <strong>@(Model.Gender ?? "N/A")</strong>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <small class="text-muted d-block">Blood Group</small>
+                            @if (!string.IsNullOrEmpty(Model.BloodGroup))
+                            {
+                                <span class="badge bg-danger fs-6">@Model.BloodGroup</span>
+                            }
+                            else
+                            {
+                                <strong>N/A</strong>
+                            }
+                        </div>
+                        <div class="col-12 mb-3">
+                            <small class="text-muted d-block">Phone</small>
+                            <strong><i class="bi bi-telephone me-1"></i>@(Model.Phone ?? "N/A")</strong>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <small class="text-muted d-block">Address</small>
+                            <strong>@(Model.Address ?? "N/A")</strong>
+                        </div>
+                        <div class="col-12">
+                            <small class="text-muted d-block">Registered On</small>
+                            <strong>@Model.CreatedAt.ToString("MMMM dd, yyyy")</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="Appointment" asp-action="Create" asp-route-patientId="@Model.Id" 
+                       class="btn btn-primary w-100">
+                        <i class="bi bi-calendar-plus me-2"></i>Book Appointment
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabs Content -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <ul class="nav nav-tabs card-header-tabs" id="patientTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="appointments-tab" data-bs-toggle="tab" 
+                                    data-bs-target="#appointments" type="button" role="tab">
+                                <i class="bi bi-calendar-check me-1"></i>Appointments
+                                <span class="badge bg-primary ms-1">@(Model.Appointments?.Count ?? 0)</span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="records-tab" data-bs-toggle="tab" 
+                                    data-bs-target="#records" type="button" role="tab">
+                                <i class="bi bi-file-medical me-1"></i>Medical Records
+                                <span class="badge bg-success ms-1">@(Model.MedicalRecords?.Count ?? 0)</span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="prescriptions-tab" data-bs-toggle="tab" 
+                                    data-bs-target="#prescriptions" type="button" role="tab">
+                                <i class="bi bi-prescription me-1"></i>Prescriptions
+                                <span class="badge bg-info ms-1">@(Model.Prescriptions?.Count ?? 0)</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="patientTabsContent">
+                        <!-- Appointments Tab -->
+                        <div class="tab-pane fade show active" id="appointments" role="tabpanel">
+                            @if (Model.Appointments != null && Model.Appointments.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Date & Time</th>
+                                                <th>Doctor</th>
+                                                <th>Reason</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var appointment in Model.Appointments.OrderByDescending(a => a.AppointmentDate))
+                                            {
+                                                <tr>
+                                                    <td>@appointment.AppointmentDate.ToString("MMM dd, yyyy HH:mm")</td>
+                                                    <td>Dr. @appointment.Doctor?.FirstName @appointment.Doctor?.LastName</td>
+                                                    <td>@(appointment.Reason?.Length > 30 ? appointment.Reason.Substring(0, 30) + "..." : appointment.Reason)</td>
+                                                    <td>
+                                                        @{
+                                                            var statusClass = appointment.Status switch
+                                                            {
+                                                                "Scheduled" => "bg-warning text-dark",
+                                                                "Completed" => "bg-success",
+                                                                "Cancelled" => "bg-danger",
+                                                                _ => "bg-secondary"
+                                                            };
+                                                        }
+                                                        <span class="badge @statusClass">@appointment.Status</span>
+                                                    </td>
+                                                    <td>
+                                                        <a asp-controller="Appointment" asp-action="Details" asp-route-id="@appointment.Id" 
+                                                           class="btn btn-sm btn-outline-primary">
+                                                            <i class="bi bi-eye"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center py-4 text-muted">
+                                    <i class="bi bi-calendar-x fs-1"></i>
+                                    <p class="mt-2">No appointments found</p>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Medical Records Tab -->
+                        <div class="tab-pane fade" id="records" role="tabpanel">
+                            @if (Model.MedicalRecords != null && Model.MedicalRecords.Any())
+                            {
+                                <div class="list-group list-group-flush">
+                                    @foreach (var record in Model.MedicalRecords.OrderByDescending(r => r.VisitDate))
+                                    {
+                                        <a asp-controller="MedicalRecord" asp-action="Details" asp-route-id="@record.Id" 
+                                           class="list-group-item list-group-item-action">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <h6 class="mb-1">@record.VisitDate.ToString("MMMM dd, yyyy")</h6>
+                                                    <p class="mb-1 text-muted">
+                                                        <small>Dr. @record.Doctor?.FirstName @record.Doctor?.LastName</small>
+                                                    </p>
+                                                    <p class="mb-0">
+                                                        <strong>Diagnosis:</strong> @(record.Diagnosis?.Length > 50 ? record.Diagnosis.Substring(0, 50) + "..." : record.Diagnosis)
+                                                    </p>
+                                                </div>
+                                                <i class="bi bi-chevron-right text-muted"></i>
+                                            </div>
+                                        </a>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center py-4 text-muted">
+                                    <i class="bi bi-file-earmark-medical fs-1"></i>
+                                    <p class="mt-2">No medical records found</p>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Prescriptions Tab -->
+                        <div class="tab-pane fade" id="prescriptions" role="tabpanel">
+                            @if (Model.Prescriptions != null && Model.Prescriptions.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Medicine</th>
+                                                <th>Dosage</th>
+                                                <th>Duration</th>
+                                                <th>Doctor</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var prescription in Model.Prescriptions.OrderByDescending(p => p.PrescriptionDate))
+                                            {
+                                                <tr>
+                                                    <td>@prescription.PrescriptionDate.ToString("MMM dd, yyyy")</td>
+                                                    <td><strong>@prescription.MedicineName</strong></td>
+                                                    <td>@prescription.Dosage</td>
+                                                    <td>@prescription.Duration</td>
+                                                    <td>Dr. @prescription.Doctor?.FirstName @prescription.Doctor?.LastName</td>
+                                                    <td>
+                                                        <a asp-controller="Prescription" asp-action="Details" asp-route-id="@prescription.Id" 
+                                                           class="btn btn-sm btn-outline-primary">
+                                                            <i class="bi bi-eye"></i>
+                                                        </a>
+                                                        <a asp-controller="Prescription" asp-action="Print" asp-route-id="@prescription.Id" 
+                                                           class="btn btn-sm btn-outline-secondary" target="_blank">
+                                                            <i class="bi bi-printer"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center py-4 text-muted">
+                                    <i class="bi bi-capsule fs-1"></i>
+                                    <p class="mt-2">No prescriptions found</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-large {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+</style>

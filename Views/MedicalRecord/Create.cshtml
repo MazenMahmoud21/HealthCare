@@ -1,0 +1,153 @@
+@model HealthcareSystem.Models.MedicalRecord
+@{
+    ViewData["Title"] = "Create Medical Record";
+    var appointment = ViewBag.Appointment as HealthcareSystem.Models.Appointment;
+    var doctor = ViewBag.Doctor as HealthcareSystem.Models.Doctor;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        @if (appointment == null)
+        {
+            <!-- Show appointment selection -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="bi bi-file-medical me-2"></i>Create Medical Record</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="text-muted mb-4">Select an Appointment</h5>
+                    
+                    @if (ViewBag.Appointments != null && ((IEnumerable<HealthcareSystem.Models.Appointment>)ViewBag.Appointments).Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var apt in (IEnumerable<HealthcareSystem.Models.Appointment>)ViewBag.Appointments)
+                            {
+                                <a asp-action="Create" asp-route-appointmentId="@apt.Id" 
+                                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">@apt.Patient?.FirstName @apt.Patient?.LastName</h6>
+                                        <small class="text-muted">
+                                            @apt.AppointmentDate.ToString("MMM dd, yyyy HH:mm") - @(apt.Reason ?? "No reason specified")
+                                        </small>
+                                    </div>
+                                    <span class="badge bg-warning text-dark">@apt.Status</span>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-calendar-x fs-1"></i>
+                            <p class="mt-2">No scheduled appointments available for medical records.</p>
+                            <a asp-controller="Doctor" asp-action="Dashboard" class="btn btn-outline-primary">
+                                <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Medical Record Form -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0"><i class="bi bi-file-medical me-2"></i>Create Medical Record</h4>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Appointment Info -->
+                    <div class="alert alert-info mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="mb-1"><i class="bi bi-person me-2"></i>Patient</h6>
+                                <strong>@appointment.Patient?.FirstName @appointment.Patient?.LastName</strong>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="mb-1"><i class="bi bi-calendar me-2"></i>Appointment Date</h6>
+                                <strong>@appointment.AppointmentDate.ToString("MMMM dd, yyyy HH:mm")</strong>
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(appointment.Reason))
+                        {
+                            <div class="mt-2">
+                                <h6 class="mb-1"><i class="bi bi-chat-left-text me-2"></i>Reason for Visit</h6>
+                                <p class="mb-0">@appointment.Reason</p>
+                            </div>
+                        }
+                    </div>
+
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="AppointmentId" />
+                        <input type="hidden" asp-for="PatientId" />
+                        <input type="hidden" asp-for="DoctorId" />
+
+                        <h5 class="text-muted mb-3 border-bottom pb-2">
+                            <i class="bi bi-clipboard2-pulse me-2"></i>Medical Examination
+                        </h5>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="VisitDate" class="form-label">Visit Date *</label>
+                                <input asp-for="VisitDate" type="datetime-local" class="form-control" 
+                                       value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required />
+                                <span asp-validation-for="VisitDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Symptoms" class="form-label">
+                                <i class="bi bi-activity me-1"></i>Symptoms / Patient Complaints *
+                            </label>
+                            <textarea asp-for="Symptoms" class="form-control" rows="3" 
+                                      placeholder="Describe the patient's symptoms and complaints" required></textarea>
+                            <span asp-validation-for="Symptoms" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Diagnosis" class="form-label">
+                                <i class="bi bi-clipboard2-pulse me-1"></i>Diagnosis *
+                            </label>
+                            <textarea asp-for="Diagnosis" class="form-control" rows="3" 
+                                      placeholder="Enter the diagnosis based on examination" required></textarea>
+                            <span asp-validation-for="Diagnosis" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Treatment" class="form-label">
+                                <i class="bi bi-bandaid me-1"></i>Treatment Plan *
+                            </label>
+                            <textarea asp-for="Treatment" class="form-control" rows="3" 
+                                      placeholder="Describe the treatment plan and recommendations" required></textarea>
+                            <span asp-validation-for="Treatment" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Notes" class="form-label">
+                                <i class="bi bi-journal-text me-1"></i>Additional Notes (Optional)
+                            </label>
+                            <textarea asp-for="Notes" class="form-control" rows="2" 
+                                      placeholder="Any additional notes or follow-up instructions"></textarea>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-controller="Appointment" asp-action="Details" asp-route-id="@appointment.Id" 
+                               class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>Back to Appointment
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle me-2"></i>Create Medical Record
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

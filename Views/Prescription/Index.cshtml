@@ -1,0 +1,167 @@
+@model IEnumerable<HealthcareSystem.Models.Prescription>
+@{
+    ViewData["Title"] = "Prescriptions";
+    var role = Context.Session.GetString("Role");
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="text-info mb-0"><i class="bi bi-prescription me-2"></i>Prescriptions</h2>
+            <p class="text-muted mb-0">View @(role == "Doctor" ? "your" : "all") prescriptions</p>
+        </div>
+        @if (role == "Doctor")
+        {
+            <a asp-action="Create" class="btn btn-info">
+                <i class="bi bi-plus-circle me-2"></i>New Prescription
+            </a>
+        }
+    </div>
+
+    <!-- Search Filter -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search by patient, medicine...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="dateFilter" placeholder="Filter by date">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-outline-secondary w-100" id="clearFilters">
+                        <i class="bi bi-x-circle me-1"></i>Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prescriptions Table -->
+    <div class="card">
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover" id="prescriptionsTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Patient</th>
+                                @if (role == "Admin")
+                                {
+                                    <th>Doctor</th>
+                                }
+                                <th>Medicine</th>
+                                <th>Dosage</th>
+                                <th>Duration</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var prescription in Model)
+                            {
+                                <tr data-date="@prescription.PrescriptionDate.ToString("yyyy-MM-dd")">
+                                    <td>
+                                        <strong>@prescription.PrescriptionDate.ToString("MMM dd, yyyy")</strong>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Patient" asp-action="Details" asp-route-id="@prescription.PatientId"
+                                           class="text-decoration-none">
+                                            @prescription.Patient?.FirstName @prescription.Patient?.LastName
+                                        </a>
+                                    </td>
+                                    @if (role == "Admin")
+                                    {
+                                        <td>Dr. @prescription.Doctor?.FirstName @prescription.Doctor?.LastName</td>
+                                    }
+                                    <td>
+                                        <span class="badge bg-info me-1">@prescription.MedicineName</span>
+                                    </td>
+                                    <td>@prescription.Dosage</td>
+                                    <td>@prescription.Duration</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Details" asp-route-id="@prescription.Id" 
+                                               class="btn btn-sm btn-outline-primary" title="View">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="Print" asp-route-id="@prescription.Id" 
+                                               class="btn btn-sm btn-outline-secondary" title="Print" target="_blank">
+                                                <i class="bi bi-printer"></i>
+                                            </a>
+                                            @if (role == "Doctor")
+                                            {
+                                                <a asp-action="Edit" asp-route-id="@prescription.Id" 
+                                                   class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted mt-3">Showing @Model.Count() prescriptions</p>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-prescription fs-1 text-muted"></i>
+                    <h5 class="mt-3">No Prescriptions Found</h5>
+                    <p class="text-muted">There are no prescriptions yet.</p>
+                    @if (role == "Doctor")
+                    {
+                        <a asp-action="Create" class="btn btn-info">
+                            <i class="bi bi-plus-circle me-2"></i>Create First Prescription
+                        </a>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const dateFilter = document.getElementById('dateFilter');
+            const clearFilters = document.getElementById('clearFilters');
+            const table = document.getElementById('prescriptionsTable');
+            
+            if (!table) return;
+            
+            const rows = table.querySelectorAll('tbody tr');
+
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const date = dateFilter.value;
+
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    const rowDate = row.dataset.date;
+
+                    const matchesSearch = text.includes(searchTerm);
+                    const matchesDate = !date || rowDate === date;
+
+                    row.style.display = (matchesSearch && matchesDate) ? '' : 'none';
+                });
+            }
+
+            searchInput.addEventListener('input', filterTable);
+            dateFilter.addEventListener('change', filterTable);
+            
+            clearFilters.addEventListener('click', function() {
+                searchInput.value = '';
+                dateFilter.value = '';
+                filterTable();
+            });
+        });
+    </script>
+}

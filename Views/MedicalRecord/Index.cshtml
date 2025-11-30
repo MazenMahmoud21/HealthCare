@@ -1,0 +1,164 @@
+@model IEnumerable<HealthcareSystem.Models.MedicalRecord>
+@{
+    ViewData["Title"] = "Medical Records";
+    var role = Context.Session.GetString("Role");
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="text-success mb-0"><i class="bi bi-file-medical me-2"></i>Medical Records</h2>
+            <p class="text-muted mb-0">View all medical records in the system</p>
+        </div>
+        @if (role == "Doctor")
+        {
+            <a asp-action="Create" class="btn btn-success">
+                <i class="bi bi-plus-circle me-2"></i>New Medical Record
+            </a>
+        }
+    </div>
+
+    <!-- Search Filter -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search by patient, diagnosis...">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="dateFilter" placeholder="Filter by date">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-outline-secondary w-100" id="clearFilters">
+                        <i class="bi bi-x-circle me-1"></i>Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Records Table -->
+    <div class="card">
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover" id="recordsTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Visit Date</th>
+                                <th>Patient</th>
+                                @if (role == "Admin")
+                                {
+                                    <th>Doctor</th>
+                                }
+                                <th>Diagnosis</th>
+                                <th>Treatment</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var record in Model)
+                            {
+                                <tr data-date="@record.VisitDate.ToString("yyyy-MM-dd")">
+                                    <td>
+                                        <strong>@record.VisitDate.ToString("MMM dd, yyyy")</strong><br>
+                                        <small class="text-muted">@record.VisitDate.ToString("hh:mm tt")</small>
+                                    </td>
+                                    <td>
+                                        <a asp-controller="Patient" asp-action="Details" asp-route-id="@record.PatientId"
+                                           class="text-decoration-none">
+                                            @record.Patient?.FirstName @record.Patient?.LastName
+                                        </a>
+                                    </td>
+                                    @if (role == "Admin")
+                                    {
+                                        <td>Dr. @record.Doctor?.FirstName @record.Doctor?.LastName</td>
+                                    }
+                                    <td>@(record.Diagnosis?.Length > 40 ? record.Diagnosis.Substring(0, 40) + "..." : record.Diagnosis ?? "N/A")</td>
+                                    <td>@(record.Treatment?.Length > 40 ? record.Treatment.Substring(0, 40) + "..." : record.Treatment ?? "N/A")</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-action="Details" asp-route-id="@record.Id" 
+                                               class="btn btn-sm btn-outline-primary" title="View Details">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            @if (role == "Doctor")
+                                            {
+                                                <a asp-action="Edit" asp-route-id="@record.Id" 
+                                                   class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                                <a asp-controller="Prescription" asp-action="Create" asp-route-recordId="@record.Id"
+                                                   class="btn btn-sm btn-outline-success" title="Add Prescription">
+                                                    <i class="bi bi-prescription"></i>
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-muted mt-3">Showing @Model.Count() medical records</p>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-file-earmark-medical fs-1 text-muted"></i>
+                    <h5 class="mt-3">No Medical Records Found</h5>
+                    <p class="text-muted">There are no medical records in the system yet.</p>
+                    @if (role == "Doctor")
+                    {
+                        <a asp-action="Create" class="btn btn-success">
+                            <i class="bi bi-plus-circle me-2"></i>Create First Record
+                        </a>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const dateFilter = document.getElementById('dateFilter');
+            const clearFilters = document.getElementById('clearFilters');
+            const table = document.getElementById('recordsTable');
+            
+            if (!table) return;
+            
+            const rows = table.querySelectorAll('tbody tr');
+
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const date = dateFilter.value;
+
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    const rowDate = row.dataset.date;
+
+                    const matchesSearch = text.includes(searchTerm);
+                    const matchesDate = !date || rowDate === date;
+
+                    row.style.display = (matchesSearch && matchesDate) ? '' : 'none';
+                });
+            }
+
+            searchInput.addEventListener('input', filterTable);
+            dateFilter.addEventListener('change', filterTable);
+            
+            clearFilters.addEventListener('click', function() {
+                searchInput.value = '';
+                dateFilter.value = '';
+                filterTable();
+            });
+        });
+    </script>
+}

@@ -1,0 +1,96 @@
+@model IEnumerable<HealthcareSystem.Models.Appointment>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var appointment in Model)
+        {
+            var statusClass = appointment.Status switch
+            {
+                "Scheduled" => "primary",
+                "Completed" => "success",
+                "Cancelled" => "danger",
+                _ => "secondary"
+            };
+            var isPast = appointment.AppointmentDate < DateTime.Now && appointment.Status == "Scheduled";
+            
+            <div class="col-lg-6 mb-3">
+                <div class="card h-100 @(isPast ? "border-warning" : "")">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span class="badge bg-@statusClass">@appointment.Status</span>
+                        @if (isPast)
+                        {
+                            <span class="badge bg-warning text-dark">Past Due</span>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="avatar-circle bg-success text-white me-3">
+                                @appointment.Doctor?.FirstName?.Substring(0, 1)@appointment.Doctor?.LastName?.Substring(0, 1)
+                            </div>
+                            <div>
+                                <h6 class="mb-0">Dr. @appointment.Doctor?.FirstName @appointment.Doctor?.LastName</h6>
+                                <small class="text-info">@appointment.Doctor?.Specialization</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="text-muted"><i class="bi bi-calendar me-1"></i>Date</small>
+                                <p class="mb-0 fw-bold">@appointment.AppointmentDate.ToString("MMM dd, yyyy")</p>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted"><i class="bi bi-clock me-1"></i>Time</small>
+                                <p class="mb-0 fw-bold">@appointment.AppointmentDate.ToString("hh:mm tt")</p>
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(appointment.Reason))
+                        {
+                            <div class="mt-3">
+                                <small class="text-muted"><i class="bi bi-chat-left-text me-1"></i>Reason</small>
+                                <p class="mb-0">@appointment.Reason</p>
+                            </div>
+                        }
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Details" asp-route-id="@appointment.Id" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-eye me-1"></i>Details
+                            </a>
+                            @if (appointment.Status == "Scheduled")
+                            {
+                                <form asp-action="Cancel" asp-route-id="@appointment.Id" method="post" 
+                                      onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-x-circle me-1"></i>Cancel
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="text-center py-4 text-muted">
+        <i class="bi bi-calendar-x fs-1"></i>
+        <p class="mt-2">No appointments in this category</p>
+    </div>
+}
+
+<style>
+    .avatar-circle {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: bold;
+    }
+</style>

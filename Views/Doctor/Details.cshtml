@@ -1,0 +1,196 @@
+@model HealthcareSystem.Models.Doctor
+@{
+    ViewData["Title"] = $"Dr. {Model.FirstName} {Model.LastName}";
+    var role = Context.Session.GetString("Role");
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-action="Index">Doctors</a></li>
+                    <li class="breadcrumb-item active">Dr. @Model.FirstName @Model.LastName</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Doctor Profile Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-person-badge me-2"></i>Doctor Profile</h5>
+                </div>
+                <div class="card-body text-center">
+                    <div class="avatar-large bg-success text-white mx-auto mb-3">
+                        @Model.FirstName?.Substring(0, 1)@Model.LastName?.Substring(0, 1)
+                    </div>
+                    <h4 class="mb-1">Dr. @Model.FirstName @Model.LastName</h4>
+                    <p class="mb-3">
+                        <span class="badge bg-info fs-6">@Model.Specialization</span>
+                    </p>
+                    
+                    <hr>
+                    
+                    <div class="text-start">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <small class="text-muted d-block"><i class="bi bi-envelope me-2"></i>Email</small>
+                                <strong>@Model.Email</strong>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <small class="text-muted d-block"><i class="bi bi-telephone me-2"></i>Phone</small>
+                                <strong>@(Model.Phone ?? "N/A")</strong>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <small class="text-muted d-block"><i class="bi bi-currency-dollar me-2"></i>Consultation Fee</small>
+                                <strong class="text-success fs-5">$@Model.ConsultationFee.ToString("F2")</strong>
+                            </div>
+                            <div class="col-12">
+                                <small class="text-muted d-block"><i class="bi bi-calendar me-2"></i>Joined</small>
+                                <strong>@Model.CreatedAt.ToString("MMMM dd, yyyy")</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (role == "Patient")
+                {
+                    <div class="card-footer">
+                        <a asp-controller="Appointment" asp-action="Create" asp-route-doctorId="@Model.Id" 
+                           class="btn btn-primary w-100">
+                            <i class="bi bi-calendar-plus me-2"></i>Book Appointment
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Appointments -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-calendar-check me-2"></i>Appointments</h5>
+                    <span class="badge bg-primary">@(Model.Appointments?.Count ?? 0) total</span>
+                </div>
+                <div class="card-body">
+                    @if (Model.Appointments != null && Model.Appointments.Any())
+                    {
+                        var upcomingAppointments = Model.Appointments.Where(a => a.AppointmentDate >= DateTime.Now && a.Status == "Scheduled").OrderBy(a => a.AppointmentDate).Take(10).ToList();
+                        var recentAppointments = Model.Appointments.Where(a => a.Status == "Completed").OrderByDescending(a => a.AppointmentDate).Take(10).ToList();
+
+                        <ul class="nav nav-pills mb-3" id="appointmentPills" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="upcoming-pill" data-bs-toggle="pill" 
+                                        data-bs-target="#upcomingAppts" type="button" role="tab">
+                                    Upcoming (@upcomingAppointments.Count)
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="recent-pill" data-bs-toggle="pill" 
+                                        data-bs-target="#recentAppts" type="button" role="tab">
+                                    Recent (@recentAppointments.Count)
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="appointmentPillsContent">
+                            <div class="tab-pane fade show active" id="upcomingAppts" role="tabpanel">
+                                @if (upcomingAppointments.Any())
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Date & Time</th>
+                                                    <th>Patient</th>
+                                                    <th>Reason</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var appointment in upcomingAppointments)
+                                                {
+                                                    <tr>
+                                                        <td>@appointment.AppointmentDate.ToString("MMM dd, yyyy HH:mm")</td>
+                                                        <td>@appointment.Patient?.FirstName @appointment.Patient?.LastName</td>
+                                                        <td>@(appointment.Reason ?? "N/A")</td>
+                                                        <td><span class="badge bg-warning text-dark">@appointment.Status</span></td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-center py-4 text-muted">
+                                        <i class="bi bi-calendar-x fs-1"></i>
+                                        <p class="mt-2">No upcoming appointments</p>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="tab-pane fade" id="recentAppts" role="tabpanel">
+                                @if (recentAppointments.Any())
+                                {
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Patient</th>
+                                                    <th>Reason</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var appointment in recentAppointments)
+                                                {
+                                                    <tr>
+                                                        <td>@appointment.AppointmentDate.ToString("MMM dd, yyyy")</td>
+                                                        <td>@appointment.Patient?.FirstName @appointment.Patient?.LastName</td>
+                                                        <td>@(appointment.Reason ?? "N/A")</td>
+                                                        <td><span class="badge bg-success">@appointment.Status</span></td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-center py-4 text-muted">
+                                        <i class="bi bi-check-circle fs-1"></i>
+                                        <p class="mt-2">No completed appointments yet</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5 text-muted">
+                            <i class="bi bi-calendar-x fs-1"></i>
+                            <p class="mt-2">No appointments found for this doctor</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-large {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: bold;
+    }
+</style>

@@ -1,0 +1,90 @@
+@model IEnumerable<HealthcareSystem.Models.MedicalRecord>
+@{
+    ViewData["Title"] = "My Medical Records";
+    var patient = ViewBag.Patient as HealthcareSystem.Models.Patient;
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="text-success mb-0"><i class="bi bi-file-medical me-2"></i>My Medical Records</h2>
+            <p class="text-muted mb-0">View your complete medical history</p>
+        </div>
+        <a asp-controller="Home" asp-action="PatientDashboard" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var record in Model)
+            {
+                <div class="col-lg-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                            <h6 class="mb-0">
+                                <i class="bi bi-calendar me-2"></i>@record.VisitDate.ToString("MMMM dd, yyyy")
+                            </h6>
+                            <span class="badge bg-light text-dark">
+                                Dr. @record.Doctor?.FirstName @record.Doctor?.LastName
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <h6 class="text-muted mb-1"><i class="bi bi-activity me-1"></i>Symptoms</h6>
+                                    <p class="mb-0">@(record.Symptoms ?? "Not recorded")</p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <h6 class="text-muted mb-1"><i class="bi bi-clipboard2-pulse me-1"></i>Diagnosis</h6>
+                                    <p class="mb-0 fw-bold">@(record.Diagnosis ?? "Not recorded")</p>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <h6 class="text-muted mb-1"><i class="bi bi-bandaid me-1"></i>Treatment</h6>
+                                    <p class="mb-0">@(record.Treatment ?? "Not recorded")</p>
+                                </div>
+                            </div>
+                            @if (record.Prescriptions != null && record.Prescriptions.Any())
+                            {
+                                <hr>
+                                <h6 class="text-muted mb-2"><i class="bi bi-prescription me-1"></i>Prescriptions</h6>
+                                <ul class="list-unstyled mb-0">
+                                    @foreach (var prescription in record.Prescriptions)
+                                    {
+                                        <li class="mb-1">
+                                            <span class="badge bg-info me-1">@prescription.MedicineName</span>
+                                            <small class="text-muted">@prescription.Dosage - @prescription.Duration</small>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </div>
+                        <div class="card-footer">
+                            <a asp-action="Details" asp-route-id="@record.Id" class="btn btn-outline-success btn-sm">
+                                <i class="bi bi-eye me-1"></i>View Full Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-file-earmark-medical fs-1 text-muted"></i>
+                <h5 class="mt-3">No Medical Records Yet</h5>
+                <p class="text-muted">You don't have any medical records yet.</p>
+                <a asp-controller="Appointment" asp-action="Create" class="btn btn-primary">
+                    <i class="bi bi-calendar-plus me-2"></i>Book an Appointment
+                </a>
+            </div>
+        </div>
+    }
+</div>

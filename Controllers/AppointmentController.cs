@@ -59,8 +59,8 @@ namespace HealthcareSystem.Controllers
         [HttpPost]
         public IActionResult Create(Appointment appointment)
         {
-            var role = HttpContext.Session.GetString("Role");
-            string userId = HttpContext.Session.GetString("UserId");
+            var role = HttpContext.Session.GetString("Role") ?? string.Empty;
+            string userId = HttpContext.Session.GetString("UserId") ?? string.Empty;
 
             if (role != "Admin" && role != "Patient")
                 return Unauthorized();
@@ -98,8 +98,8 @@ namespace HealthcareSystem.Controllers
         // -------------------------------------
         public IActionResult Details(string id)
         {
-            string userId = HttpContext.Session.GetString("UserId");
-            var role = HttpContext.Session.GetString("Role");
+            string userId = HttpContext.Session.GetString("UserId") ?? string.Empty;
+            var role = HttpContext.Session.GetString("Role") ?? string.Empty;
 
             var appointment = _context.Appointments
                 .Include(a => a.Patient)
@@ -181,6 +181,124 @@ namespace HealthcareSystem.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+
+        // -------------------------------------
+        // CANCEL APPOINTMENT (Patient)
+        // -------------------------------------
+        [HttpPost]
+        public IActionResult Cancel(string id)
+        {
+            var role = HttpContext.Session.GetString("Role");
+            var userId = HttpContext.Session.GetString("UserId");
+
+            var appointment = _context.Appointments
+                .Include(a => a.Patient)
+                .FirstOrDefault(a => a.Id == id);
+
+            if (appointment == null)
+                return NotFound();
+
+            // Only patient who owns the appointment can cancel
+            if (role == "Patient" && appointment.Patient?.UserId != userId)
+                return Unauthorized();
+
+            // Admin can also cancel
+            if (role != "Admin" && role != "Patient")
+                return Unauthorized();
+
+            appointment.Status = "Cancelled";
+            _context.SaveChanges();
+
+            TempData["Success"] = "Appointment cancelled successfully.";
+            
+            if (role == "Patient")
+                return RedirectToAction("PatientDashboard", "Home");
+            
+            return RedirectToAction("Index");
+        }
+
+        // -------------------------------------
+        // COMPLETE APPOINTMENT (Doctor)
+        // -------------------------------------
+        [HttpPost]
+        public IActionResult Complete(string id)
+        {
+            var role = HttpContext.Session.GetString("Role");
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (role != "Doctor")
+                return Unauthorized();
+
+            var appointment = _context.Appointments
+                .Include(a => a.Doctor)
+                .FirstOrDefault(a => a.Id == id);
+
+            if (appointment == null)
+                return NotFound();
+
+            // Only the assigned doctor can complete
+            if (appointment.Doctor?.UserId != userId)
+                return Unauthorized();
+
+            appointment.Status = "Completed";
+            _context.SaveChanges();
+
+            TempData["Success"] = "Appointment marked as completed.";
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        // -------------------------------------
+        // CALENDAR VIEW (Admin/Doctor)
+        // -------------------------------------
+        public IActionResult Calendar()
+        {
+            var role = HttpContext.Session.GetString("Role");
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (role != "Admin" && role != "Doctor")
+                return Unauthorized();
+
+            IQueryable<Appointment> query = _context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Doctor);
+
+            if (role == "Doctor")
+            {
+                var doctor = _context.Doctors.FirstOrDefault(d => d.UserId == userId);
+                if (doctor != null)
+                {
+                    query = query.Where(a => a.DoctorId == doctor.Id);
+                }
+            }
+
+            var appointments = query.ToList();
+            return View(appointments);
+        }
+
+        // -------------------------------------
+        // MY APPOINTMENTS (Patient)
+        // -------------------------------------
+        public IActionResult MyAppointments()
+        {
+            var role = HttpContext.Session.GetString("Role");
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (role != "Patient")
+                return RedirectToAction("Index", "Home");
+
+            var patient = _context.Patients.FirstOrDefault(p => p.UserId == userId);
+            if (patient == null)
+                return RedirectToAction("Index", "Home");
+
+            var appointments = _context.Appointments
+                .Include(a => a.Doctor)
+                    .ThenInclude(d => d.User)
+                .Where(a => a.PatientId == patient.Id)
+                .OrderByDescending(a => a.AppointmentDate)
+                .ToList();
+
+            return View(appointments);
         }
     }
 }

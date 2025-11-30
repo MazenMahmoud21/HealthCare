@@ -1,0 +1,248 @@
+@model HealthcareSystem.Models.MedicalRecord
+@{
+    ViewData["Title"] = "Medical Record Details";
+    var role = Context.Session.GetString("Role");
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    @if (role == "Patient")
+                    {
+                        <li class="breadcrumb-item"><a asp-action="MyRecords">My Records</a></li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item"><a asp-action="Index">Medical Records</a></li>
+                    }
+                    <li class="breadcrumb-item active">Record Details</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row">
+        <!-- Main Record Info -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-file-medical me-2"></i>Medical Record</h5>
+                    <span class="badge bg-light text-dark">@Model.VisitDate.ToString("MMMM dd, yyyy")</span>
+                </div>
+                <div class="card-body">
+                    <!-- Symptoms -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2">
+                            <i class="bi bi-activity me-2"></i>Symptoms / Patient Complaints
+                        </h6>
+                        <p class="mb-0">@(Model.Symptoms ?? "Not recorded")</p>
+                    </div>
+
+                    <!-- Diagnosis -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2">
+                            <i class="bi bi-clipboard2-pulse me-2"></i>Diagnosis
+                        </h6>
+                        <p class="mb-0 fw-bold text-primary fs-5">@(Model.Diagnosis ?? "Not recorded")</p>
+                    </div>
+
+                    <!-- Treatment -->
+                    <div class="mb-4">
+                        <h6 class="text-muted border-bottom pb-2">
+                            <i class="bi bi-bandaid me-2"></i>Treatment Plan
+                        </h6>
+                        <p class="mb-0">@(Model.Treatment ?? "Not recorded")</p>
+                    </div>
+
+                    <!-- Notes -->
+                    @if (!string.IsNullOrEmpty(Model.Notes))
+                    {
+                        <div class="mb-4">
+                            <h6 class="text-muted border-bottom pb-2">
+                                <i class="bi bi-journal-text me-2"></i>Additional Notes
+                            </h6>
+                            <p class="mb-0">@Model.Notes</p>
+                        </div>
+                    }
+
+                    <!-- Prescriptions -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+                            <h6 class="text-muted mb-0">
+                                <i class="bi bi-prescription me-2"></i>Prescriptions
+                            </h6>
+                            @if (role == "Doctor")
+                            {
+                                <a asp-controller="Prescription" asp-action="Create" asp-route-recordId="@Model.Id"
+                                   class="btn btn-sm btn-success">
+                                    <i class="bi bi-plus-circle me-1"></i>Add Prescription
+                                </a>
+                            }
+                        </div>
+                        
+                        @if (Model.Prescriptions != null && Model.Prescriptions.Any())
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Medicine</th>
+                                            <th>Dosage</th>
+                                            <th>Duration</th>
+                                            <th>Instructions</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var prescription in Model.Prescriptions)
+                                        {
+                                            <tr>
+                                                <td><strong>@prescription.MedicineName</strong></td>
+                                                <td>@prescription.Dosage</td>
+                                                <td>@prescription.Duration</td>
+                                                <td>@(prescription.Instructions ?? "N/A")</td>
+                                                <td>
+                                                    <a asp-controller="Prescription" asp-action="Details" asp-route-id="@prescription.Id"
+                                                       class="btn btn-sm btn-outline-primary">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                    <a asp-controller="Prescription" asp-action="Print" asp-route-id="@prescription.Id"
+                                                       class="btn btn-sm btn-outline-secondary" target="_blank">
+                                                        <i class="bi bi-printer"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-4 text-muted">
+                                <i class="bi bi-capsule fs-3"></i>
+                                <p class="mt-2 mb-0">No prescriptions added for this record</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+                @if (role == "Doctor")
+                {
+                    <div class="card-footer">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+                            <i class="bi bi-pencil me-2"></i>Edit Record
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Side Info -->
+        <div class="col-lg-4">
+            <!-- Patient Info Card -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h6 class="mb-0"><i class="bi bi-person me-2"></i>Patient Information</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="avatar-circle bg-primary text-white me-3">
+                            @Model.Patient?.FirstName?.Substring(0, 1)@Model.Patient?.LastName?.Substring(0, 1)
+                        </div>
+                        <div>
+                            <h6 class="mb-0">@Model.Patient?.FirstName @Model.Patient?.LastName</h6>
+                            <small class="text-muted">@Model.Patient?.User?.Email</small>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6 mb-2">
+                            <small class="text-muted">Phone</small><br>
+                            <strong>@(Model.Patient?.Phone ?? "N/A")</strong>
+                        </div>
+                        <div class="col-6 mb-2">
+                            <small class="text-muted">Blood Group</small><br>
+                            @if (!string.IsNullOrEmpty(Model.Patient?.BloodGroup))
+                            {
+                                <span class="badge bg-danger">@Model.Patient.BloodGroup</span>
+                            }
+                            else
+                            {
+                                <strong>N/A</strong>
+                            }
+                        </div>
+                    </div>
+                    @if (role != "Patient")
+                    {
+                        <a asp-controller="Patient" asp-action="Details" asp-route-id="@Model.PatientId"
+                           class="btn btn-outline-primary btn-sm w-100 mt-2">
+                            <i class="bi bi-eye me-1"></i>View Full Profile
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <!-- Doctor Info Card -->
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h6 class="mb-0"><i class="bi bi-heart-pulse me-2"></i>Attending Doctor</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="avatar-circle bg-success text-white me-3">
+                            @Model.Doctor?.FirstName?.Substring(0, 1)@Model.Doctor?.LastName?.Substring(0, 1)
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Dr. @Model.Doctor?.FirstName @Model.Doctor?.LastName</h6>
+                            <span class="badge bg-info">@Model.Doctor?.Specialization</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointment Info Card -->
+            @if (Model.Appointment != null)
+            {
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h6 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Related Appointment</h6>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1">
+                            <strong>@Model.Appointment.AppointmentDate.ToString("MMMM dd, yyyy")</strong>
+                        </p>
+                        <p class="mb-2 text-muted">@Model.Appointment.AppointmentDate.ToString("hh:mm tt")</p>
+                        <span class="badge bg-success">@Model.Appointment.Status</span>
+                        <a asp-controller="Appointment" asp-action="Details" asp-route-id="@Model.AppointmentId"
+                           class="btn btn-outline-info btn-sm w-100 mt-3">
+                            <i class="bi bi-eye me-1"></i>View Appointment
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .avatar-circle {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+</style>

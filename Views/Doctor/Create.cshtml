@@ -1,0 +1,148 @@
+@model HealthcareSystem.Models.Doctor
+@{
+    ViewData["Title"] = "Add New Doctor";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="bi bi-person-plus-fill me-2"></i>Add New Doctor</h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+                    
+                    <!-- Account Information -->
+                    <h5 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-key me-2"></i>Account Information
+                    </h5>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Email Address *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" name="user.Email" 
+                                       placeholder="doctor@hospital.com" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Password *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" name="user.Password" 
+                                       placeholder="Create password" required minlength="6" />
+                            </div>
+                            <small class="text-muted">Minimum 6 characters</small>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Personal Information -->
+                    <h5 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-person me-2"></i>Personal Information
+                    </h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="FirstName" class="form-label">First Name *</label>
+                            <input asp-for="FirstName" class="form-control" placeholder="Enter first name" required />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LastName" class="form-label">Last Name *</label>
+                            <input asp-for="LastName" class="form-control" placeholder="Enter last name" required />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Professional Information -->
+                    <h5 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-briefcase me-2"></i>Professional Information
+                    </h5>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Specialization" class="form-label">Specialization *</label>
+                            <select asp-for="Specialization" class="form-select" required>
+                                <option value="">Select Specialization</option>
+                                <option value="General Medicine">General Medicine</option>
+                                <option value="Cardiology">Cardiology</option>
+                                <option value="Dermatology">Dermatology</option>
+                                <option value="Endocrinology">Endocrinology</option>
+                                <option value="Gastroenterology">Gastroenterology</option>
+                                <option value="Gynecology">Gynecology</option>
+                                <option value="Nephrology">Nephrology</option>
+                                <option value="Neurology">Neurology</option>
+                                <option value="Oncology">Oncology</option>
+                                <option value="Ophthalmology">Ophthalmology</option>
+                                <option value="Orthopedics">Orthopedics</option>
+                                <option value="Pediatrics">Pediatrics</option>
+                                <option value="Psychiatry">Psychiatry</option>
+                                <option value="Pulmonology">Pulmonology</option>
+                                <option value="Radiology">Radiology</option>
+                                <option value="Rheumatology">Rheumatology</option>
+                                <option value="Surgery">Surgery</option>
+                                <option value="Urology">Urology</option>
+                            </select>
+                            <span asp-validation-for="Specialization" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ConsultationFee" class="form-label">Consultation Fee ($) *</label>
+                            <div class="input-group">
+                                <span class="input-group-text">$</span>
+                                <input asp-for="ConsultationFee" type="number" step="0.01" min="0" 
+                                       class="form-control" placeholder="0.00" required />
+                            </div>
+                            <span asp-validation-for="ConsultationFee" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <!-- Contact Information -->
+                    <h5 class="text-muted mb-3 border-bottom pb-2">
+                        <i class="bi bi-telephone me-2"></i>Contact Information
+                    </h5>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label asp-for="Phone" class="form-label">Phone Number</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input asp-for="Phone" class="form-control" placeholder="Enter phone number" />
+                            </div>
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label">Professional Email</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input asp-for="Email" type="email" class="form-control" placeholder="doctor@hospital.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                            <small class="text-muted">Professional contact email (can be different from login)</small>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-2"></i>Back to List
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-person-check me-2"></i>Create Doctor
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

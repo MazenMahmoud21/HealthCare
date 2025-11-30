@@ -11,36 +11,36 @@ namespace HealthcareSystem.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
         [Required, StringLength(50)]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
 
         [Required, StringLength(50)]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
 
         public DateTime DateOfBirth { get; set; }
 
         [StringLength(10)]
-        public string Gender { get; set; }
+        public string Gender { get; set; } = string.Empty;
 
         [StringLength(20)]
-        public string Phone { get; set; }
+        public string Phone { get; set; } = string.Empty;
 
         [StringLength(255)]
-        public string Address { get; set; }
+        public string Address { get; set; } = string.Empty;
 
         [StringLength(5)]
-        public string BloodGroup { get; set; }
+        public string BloodGroup { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         // Navigation
-        public ICollection<Appointment> Appointments { get; set; }
-        public ICollection<MedicalRecord> MedicalRecords { get; set; }
-        public ICollection<Prescription> Prescriptions { get; set; }
+        public ICollection<Appointment>? Appointments { get; set; }
+        public ICollection<MedicalRecord>? MedicalRecords { get; set; }
+        public ICollection<Prescription>? Prescriptions { get; set; }
     }
 }

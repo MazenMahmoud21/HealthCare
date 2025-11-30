@@ -10,33 +10,33 @@ namespace HealthcareSystem.Models
         public string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required]
-        public string MedicalRecordId { get; set; }
+        public string MedicalRecordId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(MedicalRecordId))]
-        public MedicalRecord MedicalRecord { get; set; }
+        public MedicalRecord MedicalRecord { get; set; } = null!;
 
         [Required]
-        public string PatientId { get; set; }
+        public string PatientId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(PatientId))]
-        public Patient Patient { get; set; }
+        public Patient Patient { get; set; } = null!;
 
         [Required]
-        public string DoctorId { get; set; }
+        public string DoctorId { get; set; } = string.Empty;
 
         [ForeignKey(nameof(DoctorId))]
-        public Doctor Doctor { get; set; }
+        public Doctor Doctor { get; set; } = null!;
 
         [Required, StringLength(100)]
-        public string MedicineName { get; set; }
+        public string MedicineName { get; set; } = string.Empty;
 
         [StringLength(100)]
-        public string Dosage { get; set; }
+        public string Dosage { get; set; } = string.Empty;
 
         [StringLength(50)]
-        public string Duration { get; set; }
+        public string Duration { get; set; } = string.Empty;
 
-        public string Instructions { get; set; }
+        public string Instructions { get; set; } = string.Empty;
 
         public DateTime PrescriptionDate { get; set; } = DateTime.Now;
     }

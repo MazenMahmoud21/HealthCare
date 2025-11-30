@@ -1,0 +1,268 @@
+@model HealthcareSystem.Models.Prescription
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prescription - @Model.Patient?.FirstName @Model.Patient?.LastName</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+            background: #fff;
+        }
+        .prescription {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background: #fff;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px double #0d6efd;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #0d6efd;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        .header p {
+            color: #6c757d;
+            font-size: 12px;
+        }
+        .rx-symbol {
+            font-size: 48px;
+            color: #0d6efd;
+            font-weight: bold;
+            font-style: italic;
+        }
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .info-box {
+            flex: 1;
+        }
+        .info-box h4 {
+            color: #0d6efd;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .info-box p {
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+        .info-box p strong {
+            color: #333;
+        }
+        .medicine-section {
+            margin: 30px 0;
+            padding: 25px;
+            border: 2px solid #0d6efd;
+            border-radius: 8px;
+        }
+        .medicine-name {
+            font-size: 24px;
+            color: #0d6efd;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .medicine-details {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 20px;
+        }
+        .medicine-detail {
+            flex: 1;
+        }
+        .medicine-detail label {
+            font-size: 11px;
+            color: #6c757d;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .medicine-detail span {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .instructions {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #ffc107;
+        }
+        .instructions h5 {
+            color: #856404;
+            margin-bottom: 8px;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        .instructions p {
+            color: #856404;
+        }
+        .footer {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .date-section {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .signature-section {
+            text-align: center;
+        }
+        .signature-line {
+            width: 200px;
+            border-top: 1px solid #333;
+            padding-top: 8px;
+            font-size: 12px;
+        }
+        .doctor-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .specialization {
+            color: #6c757d;
+            font-size: 12px;
+        }
+        .watermark {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 10px;
+            color: #ccc;
+        }
+        @@media print {
+            body {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+            .no-print {
+                display: none;
+            }
+            .prescription {
+                padding: 20px;
+            }
+        }
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .print-btn:hover {
+            background: #0b5ed7;
+        }
+    </style>
+</head>
+<body>
+    <button class="print-btn no-print" onclick="window.print()">
+        🖨️ Print Prescription
+    </button>
+
+    <div class="prescription">
+        <div class="header">
+            <h1>🏥 Healthcare Medical Center</h1>
+            <p>123 Healthcare Street, Medical City, MC 12345 | Phone: (555) 123-4567</p>
+            <p>Email: info@healthcaremedical.com | www.healthcaremedical.com</p>
+        </div>
+
+        <div class="rx-symbol">℞</div>
+
+        <div class="info-section">
+            <div class="info-box">
+                <h4>Patient Information</h4>
+                <p><strong>@Model.Patient?.FirstName @Model.Patient?.LastName</strong></p>
+                <p>Email: @Model.Patient?.User?.Email</p>
+                @if (!string.IsNullOrEmpty(Model.Patient?.Phone))
+                {
+                    <p>Phone: @Model.Patient?.Phone</p>
+                }
+            </div>
+            <div class="info-box" style="text-align: right;">
+                <h4>Prescription Date</h4>
+                <p><strong>@Model.PrescriptionDate.ToString("MMMM dd, yyyy")</strong></p>
+                <p>Rx #: @Model.Id?.Substring(0, 8).ToUpper()</p>
+            </div>
+        </div>
+
+        <div class="medicine-section">
+            <div class="medicine-name">
+                💊 @Model.MedicineName
+            </div>
+            <div class="medicine-details">
+                <div class="medicine-detail">
+                    <label>Dosage</label>
+                    <span>@Model.Dosage</span>
+                </div>
+                <div class="medicine-detail">
+                    <label>Duration</label>
+                    <span>@Model.Duration</span>
+                </div>
+            </div>
+            @if (!string.IsNullOrEmpty(Model.Instructions))
+            {
+                <div class="instructions">
+                    <h5>⚠️ Special Instructions</h5>
+                    <p>@Model.Instructions</p>
+                </div>
+            }
+        </div>
+
+        @if (Model.MedicalRecord != null)
+        {
+            <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px;">
+                <h5 style="color: #6c757d; font-size: 11px; text-transform: uppercase; margin-bottom: 8px;">Related Diagnosis</h5>
+                <p><strong>@Model.MedicalRecord.Diagnosis</strong></p>
+            </div>
+        }
+
+        <div class="footer">
+            <div class="date-section">
+                <p>Printed on: @DateTime.Now.ToString("MMMM dd, yyyy HH:mm")</p>
+                <p style="margin-top: 5px; font-style: italic;">This prescription is valid for 30 days from the prescription date.</p>
+            </div>
+            <div class="signature-section">
+                <div class="signature-line">
+                    <div class="doctor-name">Dr. @Model.Doctor?.FirstName @Model.Doctor?.LastName</div>
+                    <div class="specialization">@Model.Doctor?.Specialization</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="watermark">
+            Healthcare Management System
+        </div>
+    </div>
+</body>
+</html>

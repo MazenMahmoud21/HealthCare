@@ -79,7 +79,7 @@ namespace HealthcareSystem.Controllers
             if (HttpContext.Session.GetString("Role") != "Doctor")
                 return Unauthorized();
 
-            string userId = HttpContext.Session.GetString("UserId");
+            string userId = HttpContext.Session.GetString("UserId") ?? string.Empty;
             var doctor = _context.Doctors.FirstOrDefault(d => d.UserId == userId);
 
             if (doctor == null)
@@ -110,6 +110,80 @@ namespace HealthcareSystem.Controllers
                 return NotFound();
 
             return View(doctor);
+        }
+
+        // --------------------------------------
+        // MY PROFILE (Doctor views own profile)
+        // --------------------------------------
+        public IActionResult MyProfile()
+        {
+            if (HttpContext.Session.GetString("Role") != "Doctor")
+                return RedirectToAction("Index", "Home");
+
+            string userId = HttpContext.Session.GetString("UserId") ?? string.Empty;
+
+            var doctor = _context.Doctors
+                .Include(d => d.User)
+                .FirstOrDefault(d => d.UserId == userId);
+
+            if (doctor == null)
+                return RedirectToAction("Index", "Home");
+
+            return RedirectToAction("Details", new { id = doctor.Id });
+        }
+
+        // --------------------------------------
+        // EDIT DOCTOR (Admin or Doctor editing own profile)
+        // --------------------------------------
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            var role = HttpContext.Session.GetString("Role");
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (role != "Admin" && role != "Doctor")
+                return Unauthorized();
+
+            var doctor = _context.Doctors
+                .Include(d => d.User)
+                .FirstOrDefault(d => d.Id == id);
+
+            if (doctor == null)
+                return NotFound();
+
+            // Doctor can only edit own profile
+            if (role == "Doctor" && doctor.UserId != userId)
+                return Unauthorized();
+
+            return View(doctor);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Doctor updated)
+        {
+            var role = HttpContext.Session.GetString("Role");
+            var userId = HttpContext.Session.GetString("UserId");
+
+            if (role != "Admin" && role != "Doctor")
+                return Unauthorized();
+
+            var doctor = _context.Doctors.FirstOrDefault(d => d.Id == updated.Id);
+
+            if (doctor == null)
+                return NotFound();
+
+            // Doctor can only edit own profile
+            if (role == "Doctor" && doctor.UserId != userId)
+                return Unauthorized();
+
+            doctor.FirstName = updated.FirstName;
+            doctor.LastName = updated.LastName;
+            doctor.Specialization = updated.Specialization;
+            doctor.Phone = updated.Phone;
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Details", new { id = doctor.Id });
         }
     }
 }

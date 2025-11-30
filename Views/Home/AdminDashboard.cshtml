@@ -1,0 +1,230 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="text-primary"><i class="bi bi-speedometer2 me-2"></i>Admin Dashboard</h2>
+            <p class="text-muted">Welcome back, Administrator! Here's an overview of the healthcare system.</p>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Patients</h6>
+                            <h2 class="mb-0">@ViewBag.TotalPatients</h2>
+                        </div>
+                        <i class="bi bi-people fs-1 opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Patient" asp-action="Index" class="text-white text-decoration-none small">
+                        View All <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Doctors</h6>
+                            <h2 class="mb-0">@ViewBag.TotalDoctors</h2>
+                        </div>
+                        <i class="bi bi-heart-pulse fs-1 opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Doctor" asp-action="Index" class="text-white text-decoration-none small">
+                        View All <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Total Appointments</h6>
+                            <h2 class="mb-0">@ViewBag.TotalAppointments</h2>
+                        </div>
+                        <i class="bi bi-calendar-check fs-1 opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Appointment" asp-action="Index" class="text-white text-decoration-none small">
+                        View All <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card bg-warning text-dark h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Pending</h6>
+                            <h2 class="mb-0">@ViewBag.PendingAppointments</h2>
+                        </div>
+                        <i class="bi bi-clock-history fs-1 opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <small>Scheduled appointments</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card bg-secondary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Completed</h6>
+                            <h2 class="mb-0">@ViewBag.CompletedAppointments</h2>
+                        </div>
+                        <i class="bi bi-check-circle fs-1 opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <small>Completed visits</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
+            <div class="card bg-dark text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Medical Records</h6>
+                            <h2 class="mb-0">@ViewBag.TotalMedicalRecords</h2>
+                        </div>
+                        <i class="bi bi-file-medical fs-1 opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="MedicalRecord" asp-action="Index" class="text-white text-decoration-none small">
+                        View All <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 mb-2">
+                            <a asp-controller="Patient" asp-action="Create" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-person-plus me-2"></i>Add Patient
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-2">
+                            <a asp-controller="Doctor" asp-action="Create" class="btn btn-outline-success w-100">
+                                <i class="bi bi-person-plus-fill me-2"></i>Add Doctor
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-2">
+                            <a asp-controller="Appointment" asp-action="Create" class="btn btn-outline-info w-100">
+                                <i class="bi bi-calendar-plus me-2"></i>New Appointment
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-2">
+                            <a asp-controller="Appointment" asp-action="Calendar" class="btn btn-outline-warning w-100">
+                                <i class="bi bi-calendar3 me-2"></i>View Calendar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Appointments -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Recent Appointments</h5>
+                    <a asp-controller="Appointment" asp-action="Index" class="btn btn-sm btn-primary">View All</a>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.RecentAppointments != null && ((IEnumerable<HealthcareSystem.Models.Appointment>)ViewBag.RecentAppointments).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Date & Time</th>
+                                        <th>Patient</th>
+                                        <th>Doctor</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var appointment in (IEnumerable<HealthcareSystem.Models.Appointment>)ViewBag.RecentAppointments)
+                                    {
+                                        <tr>
+                                            <td>@appointment.AppointmentDate.ToString("MMM dd, yyyy HH:mm")</td>
+                                            <td>@appointment.Patient?.FirstName @appointment.Patient?.LastName</td>
+                                            <td>Dr. @appointment.Doctor?.FirstName @appointment.Doctor?.LastName</td>
+                                            <td>@(appointment.Reason?.Length > 30 ? appointment.Reason.Substring(0, 30) + "..." : appointment.Reason)</td>
+                                            <td>
+                                                @{
+                                                    var statusClass = appointment.Status switch
+                                                    {
+                                                        "Scheduled" => "bg-warning text-dark",
+                                                        "Completed" => "bg-success",
+                                                        "Cancelled" => "bg-danger",
+                                                        _ => "bg-secondary"
+                                                    };
+                                                }
+                                                <span class="badge @statusClass">@appointment.Status</span>
+                                            </td>
+                                            <td>
+                                                <a asp-controller="Appointment" asp-action="Details" asp-route-id="@appointment.Id" 
+                                                   class="btn btn-sm btn-outline-primary">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-calendar-x fs-1"></i>
+                            <p class="mt-2">No appointments found</p>
+                            <a asp-controller="Appointment" asp-action="Create" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-2"></i>Create First Appointment
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

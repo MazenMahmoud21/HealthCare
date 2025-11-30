@@ -1,0 +1,296 @@
+@{
+    ViewData["Title"] = "Patient Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="text-primary"><i class="bi bi-person-circle me-2"></i>Patient Dashboard</h2>
+            <p class="text-muted">Welcome back, @ViewBag.PatientName! Here's your health overview.</p>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card bg-primary text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Total Appointments</h6>
+                            <h2 class="mb-0">@ViewBag.TotalAppointments</h2>
+                        </div>
+                        <i class="bi bi-calendar-check fs-1 opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Appointment" asp-action="Index" class="text-white text-decoration-none small">
+                        View All <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Medical Records</h6>
+                            <h2 class="mb-0">@ViewBag.TotalMedicalRecords</h2>
+                        </div>
+                        <i class="bi bi-file-medical fs-1 opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="MedicalRecord" asp-action="MyRecords" class="text-white text-decoration-none small">
+                        View All <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 mb-3">
+            <div class="card bg-info text-white h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title mb-0">Prescriptions</h6>
+                            <h2 class="mb-0">@ViewBag.TotalPrescriptions</h2>
+                        </div>
+                        <i class="bi bi-prescription fs-1 opacity-50"></i>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="Prescription" asp-action="MyPrescriptions" class="text-white text-decoration-none small">
+                        View All <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Upcoming Appointments -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="bi bi-calendar-event me-2"></i>Upcoming Appointments</h5>
+                    <a asp-controller="Appointment" asp-action="Create" class="btn btn-sm btn-light">
+                        <i class="bi bi-plus"></i> Book
+                    </a>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.UpcomingAppointments != null && ((IEnumerable<HealthcareSystem.Models.Appointment>)ViewBag.UpcomingAppointments).Any())
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var appointment in (IEnumerable<HealthcareSystem.Models.Appointment>)ViewBag.UpcomingAppointments)
+                            {
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1">
+                                                <i class="bi bi-calendar text-primary me-2"></i>
+                                                @appointment.AppointmentDate.ToString("dddd, MMM dd, yyyy")
+                                            </h6>
+                                            <p class="mb-1 text-muted">
+                                                <i class="bi bi-clock me-1"></i>@appointment.AppointmentDate.ToString("hh:mm tt")
+                                                <span class="ms-3">
+                                                    <i class="bi bi-person me-1"></i>Dr. @appointment.Doctor?.FirstName @appointment.Doctor?.LastName
+                                                </span>
+                                            </p>
+                                            @if (!string.IsNullOrEmpty(appointment.Reason))
+                                            {
+                                                <small class="text-muted">@appointment.Reason</small>
+                                            }
+                                        </div>
+                                        <span class="badge bg-warning text-dark">@appointment.Status</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-calendar-plus fs-1"></i>
+                            <p class="mt-2">No upcoming appointments</p>
+                            <a asp-controller="Appointment" asp-action="Create" class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-2"></i>Book an Appointment
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Medical Records -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-file-medical me-2"></i>Recent Medical Records</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.MedicalRecords != null && ((IEnumerable<HealthcareSystem.Models.MedicalRecord>)ViewBag.MedicalRecords).Any())
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var record in (IEnumerable<HealthcareSystem.Models.MedicalRecord>)ViewBag.MedicalRecords)
+                            {
+                                <a asp-controller="MedicalRecord" asp-action="Details" asp-route-id="@record.Id" 
+                                   class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="mb-1">@record.VisitDate.ToString("MMM dd, yyyy")</h6>
+                                            <small class="text-muted">
+                                                Dr. @record.Doctor?.FirstName @record.Doctor?.LastName
+                                            </small>
+                                        </div>
+                                        <small class="text-primary">
+                                            @(record.Diagnosis?.Length > 25 ? record.Diagnosis.Substring(0, 25) + "..." : record.Diagnosis)
+                                        </small>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-file-earmark-medical fs-1"></i>
+                            <p class="mt-2">No medical records yet</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Past Appointments -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Past Appointments</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.PastAppointments != null && ((IEnumerable<HealthcareSystem.Models.Appointment>)ViewBag.PastAppointments).Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Doctor</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var appointment in (IEnumerable<HealthcareSystem.Models.Appointment>)ViewBag.PastAppointments)
+                                    {
+                                        <tr>
+                                            <td>@appointment.AppointmentDate.ToString("MMM dd, yyyy")</td>
+                                            <td>Dr. @appointment.Doctor?.FirstName @appointment.Doctor?.LastName</td>
+                                            <td>
+                                                @{
+                                                    var statusClass = appointment.Status switch
+                                                    {
+                                                        "Completed" => "bg-success",
+                                                        "Cancelled" => "bg-danger",
+                                                        _ => "bg-secondary"
+                                                    };
+                                                }
+                                                <span class="badge @statusClass">@appointment.Status</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-calendar-x fs-1"></i>
+                            <p class="mt-2">No past appointments</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Prescriptions -->
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="bi bi-prescription me-2"></i>Recent Prescriptions</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.Prescriptions != null && ((IEnumerable<HealthcareSystem.Models.Prescription>)ViewBag.Prescriptions).Any())
+                    {
+                        <div class="list-group list-group-flush">
+                            @foreach (var prescription in (IEnumerable<HealthcareSystem.Models.Prescription>)ViewBag.Prescriptions)
+                            {
+                                <a asp-controller="Prescription" asp-action="Details" asp-route-id="@prescription.Id" 
+                                   class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="mb-1">@prescription.MedicineName</h6>
+                                            <small class="text-muted">
+                                                @prescription.Dosage - @prescription.Duration
+                                            </small>
+                                        </div>
+                                        <small class="text-muted">
+                                            @prescription.PrescriptionDate.ToString("MMM dd")
+                                        </small>
+                                    </div>
+                                </a>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-capsule fs-1"></i>
+                            <p class="mt-2">No prescriptions yet</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="bi bi-lightning me-2"></i>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 mb-2">
+                            <a asp-controller="Appointment" asp-action="Create" class="btn btn-primary w-100">
+                                <i class="bi bi-calendar-plus me-2"></i>Book Appointment
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-2">
+                            <a asp-controller="Doctor" asp-action="Index" class="btn btn-outline-success w-100">
+                                <i class="bi bi-search me-2"></i>Find a Doctor
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-2">
+                            <a asp-controller="MedicalRecord" asp-action="MyRecords" class="btn btn-outline-info w-100">
+                                <i class="bi bi-file-medical me-2"></i>My Records
+                            </a>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-2">
+                            <a asp-controller="Patient" asp-action="Edit" asp-route-id="@ViewBag.Patient?.Id" class="btn btn-outline-secondary w-100">
+                                <i class="bi bi-person-gear me-2"></i>Edit Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
