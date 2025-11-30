@@ -7,9 +7,9 @@ A modern, full-featured healthcare management system built with ASP.NET Core MVC
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat-square&logo=bootstrap&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-## ✨ Features
+## Features
 
-### 👥 Multi-Role Authentication
+### Multi-Role Authentication
 - **Admin** - Full system access and management
 - **Doctor** - Patient management, appointments, prescriptions
 - **Patient** - Book appointments, view records and prescriptions
@@ -24,20 +24,20 @@ A modern, full-featured healthcare management system built with ASP.NET Core MVC
 | **Medical Records** | Create and manage patient medical records |
 | **Prescriptions** | Digital prescriptions with print support |
 
-### 🎨 Modern UI/UX
+###  Modern UI/UX
 - Clean, minimal, and professional design
 - Responsive dashboard for all user roles
 - Real-time statistics and data visualization
 - Mobile-friendly interface
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Backend:** ASP.NET Core 8.0 MVC
 - **Database:** Entity Framework Core with SQL Server
 - **Frontend:** Bootstrap 5, Font Awesome, Inter Font
 - **Authentication:** Session-based authentication
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -121,7 +121,7 @@ HealthCare/
 └── Program.cs            # Application Entry Point
 ```
 
-## 🔐 Default Roles
+## Default Roles
 
 | Role | Access Level |
 |------|--------------|
@@ -129,21 +129,7 @@ HealthCare/
 | Doctor | View patients, manage appointments, create prescriptions & records |
 | Patient | Book appointments, view own records and prescriptions |
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👨‍💻 Author
+##  Author
 
 **Mazen Mahmoud**
 
