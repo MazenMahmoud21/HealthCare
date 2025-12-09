@@ -1,4 +1,4 @@
-# Screenshots Guide
+# 🏥 Screenshots Guide
 
 This folder contains screenshots of the Healthcare Management System.
 
