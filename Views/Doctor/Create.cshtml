@@ -23,22 +23,20 @@
                             <label class="form-label">Email Address *</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input type="email" class="form-control" name="user.Email" 
-                                       placeholder="doctor@hospital.com" required />
+                                <input type="email" class="form-control" name="userEmail"
+                                       placeholder="doctor1@hospital.com" required />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Password *</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                <input type="password" class="form-control" name="user.Password" 
+                                <input type="password" class="form-control" name="userPassword"
                                        placeholder="Create password" required minlength="6" />
                             </div>
                             <small class="text-muted">Minimum 6 characters</small>
                         </div>
-                    </div>
-
-                    <hr class="my-4">
+                    </div>                    <hr class="my-4">
 
                     <!-- Personal Information -->
                     <h5 class="text-muted mb-3 border-bottom pb-2">
@@ -48,12 +46,12 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label asp-for="FirstName" class="form-label">First Name *</label>
-                            <input asp-for="FirstName" class="form-control" placeholder="Enter first name" required />
+                            <input asp-for="FirstName" class="form-control" placeholder="Doctor" required />
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
                             <label asp-for="LastName" class="form-label">Last Name *</label>
-                            <input asp-for="LastName" class="form-control" placeholder="Enter last name" required />
+                            <input asp-for="LastName" class="form-control" placeholder="1" required />
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                     </div>
@@ -114,7 +112,7 @@
                             <label asp-for="Phone" class="form-label">Phone Number</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                <input asp-for="Phone" class="form-control" placeholder="Enter phone number" />
+                                <input asp-for="Phone" class="form-control" placeholder="+20 100 000 0000" />
                             </div>
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
@@ -122,7 +120,7 @@
                             <label asp-for="Email" class="form-label">Professional Email</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
-                                <input asp-for="Email" type="email" class="form-control" placeholder="doctor@hospital.com" />
+                                <input asp-for="Email" type="email" class="form-control" placeholder="doctor1@hospital.com" />
                             </div>
                             <span asp-validation-for="Email" class="text-danger"></span>
                             <small class="text-muted">Professional contact email (can be different from login)</small>
