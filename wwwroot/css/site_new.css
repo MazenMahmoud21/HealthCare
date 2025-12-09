@@ -105,7 +105,8 @@
 
 .stat-card .stat-label {
   font-size: 0.8125rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  font-weight: 500;
   margin-top: 0.25rem;
 }
 
@@ -120,6 +121,25 @@
 
 .stat-card .stat-change.negative {
   color: var(--accent-danger);
+}
+
+/* Stat card links with better contrast */
+.stat-card a.small,
+.stat-card .small a {
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: color var(--transition-fast);
+}
+
+.stat-card a.small:hover,
+.stat-card .small a:hover {
+  color: var(--primary-color);
+}
+
+.stat-card .text-muted.small,
+.stat-card .small.text-muted {
+  color: var(--text-primary);
+  opacity: 0.7;
 }
 
 /* === Text Colors === */
@@ -216,7 +236,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .page-subtitle {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  opacity: 0.75;
 }
 
 p {
@@ -462,6 +483,8 @@ p {
 .card-header .card-title {
   margin: 0;
   font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .card-body {
@@ -478,6 +501,7 @@ p {
   font-weight: 700;
   font-size: 1.25rem;
   margin-bottom: 0.75rem;
+  color: var(--text-primary);
   color: var(--text-primary);
 }
 

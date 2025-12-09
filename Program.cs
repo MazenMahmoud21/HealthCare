@@ -10,7 +10,7 @@ builder.Services.AddControllersWithViews();
 
 // Add DbContext with SQLite
 builder.Services.AddDbContext<HealthcareDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 // Add Password Hasher
@@ -74,10 +74,10 @@ Task.Run(async () =>
                 {
                     Id = Guid.NewGuid().ToString(),
                     UserId = doctorUser.Id,
-                    FirstName = "John",
-                    LastName = "Smith",
+                    FirstName = "Doctor",
+                    LastName = "1",
                     Specialization = "General Practice",
-                    Phone = "+1 (555) 123-4567",
+                    Phone = "+20 100 000 0001",
                     Email = "doctor@healthcare.com",
                     CreatedAt = DateTime.Now
                 };

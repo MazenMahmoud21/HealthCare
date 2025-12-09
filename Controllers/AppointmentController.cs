@@ -65,11 +65,15 @@ namespace HealthcareSystem.Controllers
             if (role != "Admin" && role != "Patient")
                 return Unauthorized();
 
+            // Remove model state validation for navigation properties
+            ModelState.Remove("Patient");
+            ModelState.Remove("Doctor");
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Patients = _context.Patients.Include(p => p.User).ToList();
                 ViewBag.Doctors = _context.Doctors.Include(d => d.User).ToList();
-                return View();
+                return View(appointment);
             }
 
             if (role == "Patient")
@@ -81,15 +85,16 @@ namespace HealthcareSystem.Controllers
                 appointment.PatientId = patient.Id; // string
             }
 
+            appointment.Id = Guid.NewGuid().ToString();
             appointment.Status = "Scheduled";
             appointment.CreatedAt = DateTime.Now;
-
-            // Generate string ID (GUID)
-            appointment.Id = Guid.NewGuid().ToString();
 
             _context.Appointments.Add(appointment);
             _context.SaveChanges();
 
+            if (role == "Patient")
+                return RedirectToAction("MyAppointments");
+            
             return RedirectToAction("Index");
         }
 

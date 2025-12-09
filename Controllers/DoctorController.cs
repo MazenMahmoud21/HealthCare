@@ -43,26 +43,36 @@ namespace HealthcareSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(User user, Doctor doctor)
+        public IActionResult Create(Doctor doctor, string userEmail, string userPassword)
         {
             if (HttpContext.Session.GetString("Role") != "Admin")
                 return Unauthorized();
 
+            // Remove model state validation for UserId since we'll set it
+            ModelState.Remove("UserId");
+            ModelState.Remove("User");
+
             if (!ModelState.IsValid)
-                return View();
+            {
+                return View(doctor);
+            }
 
-            // Set role and hash password
-            user.Role = "Doctor";
-            user.Password = _hasher.HashPassword(user, user.Password);
-            user.CreatedAt = DateTime.Now;
-
-            // Generate string ID
-            user.Id = Guid.NewGuid().ToString();
+            // Create user account
+            var user = new User
+            {
+                Id = Guid.NewGuid().ToString(),
+                Email = userEmail,
+                Role = "Doctor",
+                CreatedAt = DateTime.Now
+            };
+            user.Password = _hasher.HashPassword(user, userPassword);
+            
             _context.Users.Add(user);
             _context.SaveChanges();
 
+            // Create doctor profile
+            doctor.Id = Guid.NewGuid().ToString();
             doctor.UserId = user.Id;
-            doctor.Id = Guid.NewGuid().ToString(); // string ID
             doctor.CreatedAt = DateTime.Now;
 
             _context.Doctors.Add(doctor);

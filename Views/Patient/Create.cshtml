@@ -24,7 +24,7 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-envelope"></i></span>
                                 <input type="email" class="form-control" name="user.Email" 
-                                       placeholder="patient@email.com" required />
+                                       placeholder="patient1@email.com" required />
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -48,12 +48,12 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label asp-for="FirstName" class="form-label">First Name *</label>
-                            <input asp-for="FirstName" class="form-control" placeholder="Enter first name" required />
+                            <input asp-for="FirstName" class="form-control" placeholder="Patient" required />
                             <span asp-validation-for="FirstName" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
                             <label asp-for="LastName" class="form-label">Last Name *</label>
-                            <input asp-for="LastName" class="form-control" placeholder="Enter last name" required />
+                            <input asp-for="LastName" class="form-control" placeholder="1" required />
                             <span asp-validation-for="LastName" class="text-danger"></span>
                         </div>
                     </div>
@@ -70,7 +70,6 @@
                                 <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
-                                <option value="Other">Other</option>
                             </select>
                             <span asp-validation-for="Gender" class="text-danger"></span>
                         </div>
@@ -103,7 +102,7 @@
                             <label asp-for="Phone" class="form-label">Phone Number *</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                                <input asp-for="Phone" class="form-control" placeholder="Enter phone number" required />
+                                <input asp-for="Phone" class="form-control" placeholder="+20 100 000 0000" required />
                             </div>
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
@@ -114,7 +113,7 @@
                         <div class="input-group">
                             <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
                             <textarea asp-for="Address" class="form-control" rows="2" 
-                                      placeholder="Enter full address"></textarea>
+                                      placeholder="Cairo, Egypt"></textarea>
                         </div>
                         <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
