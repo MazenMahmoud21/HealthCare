@@ -133,7 +133,7 @@
                             <div class="row g-3 mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Appointment Date *</label>
-                                    <input type="date" class="form-control" id="appointmentDate" name="AppointmentDate" 
+                                    <input type="date" class="form-control" id="appointmentDate"
                                            min="@DateTime.Today.ToString("yyyy-MM-dd")" required />
                                 </div>
                                 <div class="col-md-6">
@@ -258,7 +258,6 @@
                 
                 if (date && time) {
                     combinedDateTime.value = date + 'T' + time;
-                    appointmentDate.removeAttribute('name'); // Remove duplicate
                 } else {
                     e.preventDefault();
                     alert('Please select both date and time for the appointment.');

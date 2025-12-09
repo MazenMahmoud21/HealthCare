@@ -57,10 +57,19 @@ namespace HealthcareSystem.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Appointment appointment)
         {
+            Console.WriteLine("=== Appointment Create POST received ===");
+            Console.WriteLine($"DoctorId: {appointment.DoctorId}");
+            Console.WriteLine($"PatientId: {appointment.PatientId}");
+            Console.WriteLine($"AppointmentDate: {appointment.AppointmentDate}");
+            Console.WriteLine($"Reason: {appointment.Reason}");
+            
             var role = HttpContext.Session.GetString("Role") ?? string.Empty;
             string userId = HttpContext.Session.GetString("UserId") ?? string.Empty;
+
+            Console.WriteLine($"Role: {role}, UserId: {userId}");
 
             if (role != "Admin" && role != "Patient")
                 return Unauthorized();
@@ -68,6 +77,29 @@ namespace HealthcareSystem.Controllers
             // Remove model state validation for navigation properties
             ModelState.Remove("Patient");
             ModelState.Remove("Doctor");
+            
+            // For patients, PatientId is set programmatically, so remove from validation
+            if (role == "Patient")
+            {
+                ModelState.Remove("PatientId");
+            }
+            
+            // Log model state errors
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("=== ModelState Errors ===");
+                foreach (var key in ModelState.Keys)
+                {
+                    var state = ModelState[key];
+                    if (state != null && state.Errors.Count > 0)
+                    {
+                        foreach (var error in state.Errors)
+                        {
+                            Console.WriteLine($"  {key}: {error.ErrorMessage}");
+                        }
+                    }
+                }
+            }
 
             if (!ModelState.IsValid)
             {
