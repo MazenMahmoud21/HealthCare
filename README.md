@@ -85,15 +85,49 @@ A modern, full-featured healthcare management system built with ASP.NET Core MVC
 
 ## 📸 Screenshots
 
-### Dashboard
-- Admin Dashboard with system statistics
-- Doctor Dashboard with appointment schedule
-- Patient Dashboard with health overview
+### Login & Registration
+![Login Page](screenshots/login.png)
+*User authentication screen with email and password*
 
-### Key Features
-- Appointment booking with doctor selection
-- Medical records management
-- Digital prescription system
+![Registration Page](screenshots/register.png)
+*New user registration form*
+
+### Admin Dashboard
+![Admin Dashboard](screenshots/admin-dashboard.png)
+*Admin panel with system statistics and user management*
+
+### Doctor Dashboard
+![Doctor Dashboard](screenshots/doctor-dashboard.png)
+*Doctor dashboard showing appointments and patient schedule*
+
+### Patient Dashboard
+![Patient Dashboard](screenshots/patient-dashboard.png)
+*Patient health overview and appointment history*
+
+### Appointment System
+![Appointment Calendar](screenshots/appointment-calendar.png)
+*Interactive calendar for booking and managing appointments*
+
+![Appointment Details](screenshots/appointment-details.png)
+*Detailed view of appointment information*
+
+### Medical Records
+![Medical Records](screenshots/medical-records.png)
+*Patient medical history and health records management*
+
+### Prescriptions
+![Prescription List](screenshots/prescription-list.png)
+*Digital prescription management system*
+
+![Prescription Print](screenshots/prescription-print.png)
+*Prescription printing functionality*
+
+### Doctor Management
+![Doctor Directory](screenshots/doctor-directory.png)
+*List of all doctors with specializations and fees*
+
+![Doctor Details](screenshots/doctor-details.png)
+*Individual doctor profile and consultation information*
 
 ## 📁 Project Structure
 
