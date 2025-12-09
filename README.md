@@ -83,6 +83,10 @@ A modern, full-featured healthcare management system built with ASP.NET Core MVC
    http://localhost:5049
    ```
 
+## 🎥 Presentation
+
+- Google Drive: https://drive.google.com/file/d/1-EcKY9ZqXjNRJrl8OR0lBEwXjDp0R6iL/view?usp=sharing
+
 ## 📸 Screenshots
 
 ### Login & Registration
@@ -164,8 +168,6 @@ HealthCare/
 | Patient | Book appointments, view own records and prescriptions |
 
 ##  Author
-
-**Mazen Mahmoud**
 
 - GitHub: [@MazenMahmoud21](https://github.com/MazenMahmoud21)
 - GitHub: [@Hazem-esam](https://github.com/Hazem-esam)

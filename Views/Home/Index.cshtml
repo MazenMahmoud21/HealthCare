@@ -23,86 +23,425 @@
                             </a>
                         </div>
                     </div>
-                    <div class="col-lg-5 d-none d-lg-flex justify-content-center">
-                        <div class="hero-illustration">
-                            <i class="fas fa-heartbeat"></i>
+                    <div class="col-lg-5 d-none d-lg-flex justify-content-center align-items-center">
+                        <div class="hero-illustration-container">
+                            <!-- Main central element -->
+                            <div class="hero-main-icon">
+                                <i class="fas fa-heartbeat"></i>
+                            </div>
+                            
+                            <!-- Floating medical icons -->
+                            <div class="floating-icon floating-1">
+                                <i class="fas fa-stethoscope"></i>
+                            </div>
+                            <div class="floating-icon floating-2">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="floating-icon floating-3">
+                                <i class="fas fa-pills"></i>
+                            </div>
+                            <div class="floating-icon floating-4">
+                                <i class="fas fa-syringe"></i>
+                            </div>
+                            <div class="floating-icon floating-5">
+                                <i class="fas fa-notes-medical"></i>
+                            </div>
+                            <div class="floating-icon floating-6">
+                                <i class="fas fa-ambulance"></i>
+                            </div>
+                            
+                            <!-- Decorative shapes -->
+                            <div class="deco-circle deco-1"></div>
+                            <div class="deco-circle deco-2"></div>
+                            <div class="deco-circle deco-3"></div>
+                            <div class="deco-ring deco-4"></div>
+                            <div class="deco-ring deco-5"></div>
+                            
+                            <!-- Pulse rings -->
+                            <div class="pulse-ring pulse-1"></div>
+                            <div class="pulse-ring pulse-2"></div>
+                            <div class="pulse-ring pulse-3"></div>
+                            
+                            <!-- Dot pattern -->
+                            <div class="dot-pattern"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Features Section -->
-        <div class="mb-4">
-            <div class="d-flex align-items-center mb-4">
-                <h2 class="h5 fw-semibold mb-0">Why Choose Us</h2>
-                <div class="flex-grow-1 ms-3 border-bottom"></div>
+        <!-- How It Works Section -->
+        <div class="how-it-works-section mb-5">
+            <div class="text-center mb-5">
+                <span class="section-badge section-badge-success">
+                    <i class="fas fa-magic me-2"></i>Simple Process
+                </span>
+                <h2 class="section-title">How It Works</h2>
+                <p class="section-subtitle">Get started with our platform in just four easy steps</p>
             </div>
             
-            <div class="row g-3">
+            <div class="steps-container">
+                <div class="steps-line d-none d-lg-block"></div>
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="step-card-new">
+                            <div class="step-badge">Step 1</div>
+                            <div class="step-icon-wrapper">
+                                <div class="step-icon-bg"></div>
+                                <div class="step-icon-new">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="step-pulse"></div>
+                            </div>
+                            <h5 class="step-title">Create Account</h5>
+                            <p class="step-desc">Sign up in seconds with your email and basic information.</p>
+                            <div class="step-arrow d-none d-lg-flex">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="step-card-new step-2">
+                            <div class="step-badge">Step 2</div>
+                            <div class="step-icon-wrapper">
+                                <div class="step-icon-bg"></div>
+                                <div class="step-icon-new">
+                                    <i class="fas fa-search-plus"></i>
+                                </div>
+                                <div class="step-pulse"></div>
+                            </div>
+                            <h5 class="step-title">Find a Doctor</h5>
+                            <p class="step-desc">Browse our directory of qualified healthcare professionals.</p>
+                            <div class="step-arrow d-none d-lg-flex">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="step-card-new step-3">
+                            <div class="step-badge">Step 3</div>
+                            <div class="step-icon-wrapper">
+                                <div class="step-icon-bg"></div>
+                                <div class="step-icon-new">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="step-pulse"></div>
+                            </div>
+                            <h5 class="step-title">Book Appointment</h5>
+                            <p class="step-desc">Select a convenient time slot and book instantly.</p>
+                            <div class="step-arrow d-none d-lg-flex">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="step-card-new step-4">
+                            <div class="step-badge step-badge-final">Final Step</div>
+                            <div class="step-icon-wrapper">
+                                <div class="step-icon-bg"></div>
+                                <div class="step-icon-new">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="step-pulse"></div>
+                            </div>
+                            <h5 class="step-title">Get Care</h5>
+                            <p class="step-desc">Visit your doctor and receive quality healthcare.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Services Section -->
+        <div class="services-section mb-5">
+            <div class="text-center mb-5">
+                <span class="section-badge section-badge-info">
+                    <i class="fas fa-hand-holding-medical me-2"></i>What We Offer
+                </span>
+                <h2 class="section-title">Our Services</h2>
+                <p class="section-subtitle">Comprehensive healthcare solutions designed for your well-being</p>
+            </div>
+            
+            <div class="row g-4">
                 <div class="col-md-6 col-lg-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body p-4">
-                            <div class="feature-icon mb-3">
+                    <div class="service-card-new">
+                        <div class="service-icon-wrapper">
+                            <div class="service-icon-ring"></div>
+                            <div class="service-icon">
+                                <i class="fas fa-stethoscope"></i>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h5 class="service-title">General Checkup</h5>
+                            <p class="service-desc">Comprehensive health assessments to monitor your overall well-being.</p>
+                            <ul class="service-list">
+                                <li>
+                                    <span class="service-check"><i class="fas fa-check"></i></span>
+                                    Full body examination
+                                </li>
+                                <li>
+                                    <span class="service-check"><i class="fas fa-check"></i></span>
+                                    Vital signs monitoring
+                                </li>
+                                <li>
+                                    <span class="service-check"><i class="fas fa-check"></i></span>
+                                    Health consultation
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="service-hover-effect"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="service-card-new service-purple">
+                        <div class="service-icon-wrapper">
+                            <div class="service-icon-ring"></div>
+                            <div class="service-icon">
                                 <i class="fas fa-user-md"></i>
                             </div>
-                            <h5 class="fw-semibold mb-2">Expert Doctors</h5>
-                            <p class="text-muted mb-0">Access qualified healthcare professionals across various specializations.</p>
+                        </div>
+                        <div class="service-content">
+                            <h5 class="service-title">Specialist Consultation</h5>
+                            <p class="service-desc">Access to expert specialists for specific health concerns.</p>
+                            <ul class="service-list">
+                                <li>
+                                    <span class="service-check"><i class="fas fa-check"></i></span>
+                                    Cardiology experts
+                                </li>
+                                <li>
+                                    <span class="service-check"><i class="fas fa-check"></i></span>
+                                    Neurology specialists
+                                </li>
+                                <li>
+                                    <span class="service-check"><i class="fas fa-check"></i></span>
+                                    Dermatology care
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="service-hover-effect"></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="service-card-new service-orange">
+                        <div class="service-icon-wrapper">
+                            <div class="service-icon-ring"></div>
+                            <div class="service-icon">
+                                <i class="fas fa-microscope"></i>
+                            </div>
+                        </div>
+                        <div class="service-content">
+                            <h5 class="service-title">Lab & Diagnostics</h5>
+                            <p class="service-desc">Comprehensive diagnostic tests with accurate results.</p>
+                            <ul class="service-list">
+                                <li>
+                                    <span class="service-check"><i class="fas fa-check"></i></span>
+                                    Blood tests & analysis
+                                </li>
+                                <li>
+                                    <span class="service-check"><i class="fas fa-check"></i></span>
+                                    Advanced imaging
+                                </li>
+                                <li>
+                                    <span class="service-check"><i class="fas fa-check"></i></span>
+                                    Digital reports
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="service-hover-effect"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Choose Us Section -->
+        <div class="why-choose-section mb-5">
+            <div class="text-center mb-5">
+                <span class="section-badge section-badge-primary">
+                    <i class="fas fa-award me-2"></i>Why Choose Us
+                </span>
+                <h2 class="section-title">The Healthcare Platform You Can Trust</h2>
+                <p class="section-subtitle">Experience modern healthcare management with features designed for you</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="feature-card-new">
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon-new feature-cyan">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <div class="feature-glow"></div>
+                        </div>
+                        <h5 class="feature-title">Expert Doctors</h5>
+                        <p class="feature-desc">Access qualified healthcare professionals across various specializations for personalized care.</p>
+                        <div class="feature-link">
+                            <span>Browse Doctors</span>
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body p-4">
-                            <div class="feature-icon feature-icon-success mb-3">
+                    <div class="feature-card-new">
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon-new feature-green">
                                 <i class="fas fa-calendar-check"></i>
                             </div>
-                            <h5 class="fw-semibold mb-2">Easy Scheduling</h5>
-                            <p class="text-muted mb-0">Book, reschedule, or cancel appointments with just a few clicks.</p>
+                            <div class="feature-glow"></div>
+                        </div>
+                        <h5 class="feature-title">Easy Scheduling</h5>
+                        <p class="feature-desc">Book, reschedule, or cancel appointments with just a few clicks from any device.</p>
+                        <div class="feature-link">
+                            <span>Book Now</span>
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body p-4">
-                            <div class="feature-icon feature-icon-info mb-3">
+                    <div class="feature-card-new">
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon-new feature-purple">
                                 <i class="fas fa-file-medical-alt"></i>
                             </div>
-                            <h5 class="fw-semibold mb-2">Digital Records</h5>
-                            <p class="text-muted mb-0">Securely store and access your complete medical history anytime.</p>
+                            <div class="feature-glow"></div>
+                        </div>
+                        <h5 class="feature-title">Digital Records</h5>
+                        <p class="feature-desc">Securely store and access your complete medical history anytime, anywhere.</p>
+                        <div class="feature-link">
+                            <span>View Records</span>
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body p-4">
-                            <div class="feature-icon feature-icon-warning mb-3">
+                    <div class="feature-card-new">
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon-new feature-orange">
                                 <i class="fas fa-prescription-bottle-alt"></i>
                             </div>
-                            <h5 class="fw-semibold mb-2">Prescriptions</h5>
-                            <p class="text-muted mb-0">View and manage your prescriptions digitally in one place.</p>
+                            <div class="feature-glow"></div>
+                        </div>
+                        <h5 class="feature-title">E-Prescriptions</h5>
+                        <p class="feature-desc">View and manage your prescriptions digitally in one convenient place.</p>
+                        <div class="feature-link">
+                            <span>My Prescriptions</span>
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body p-4">
-                            <div class="feature-icon feature-icon-danger mb-3">
+                    <div class="feature-card-new">
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon-new feature-red">
                                 <i class="fas fa-shield-alt"></i>
                             </div>
-                            <h5 class="fw-semibold mb-2">Secure & Private</h5>
-                            <p class="text-muted mb-0">Your health data is protected with enterprise-grade security.</p>
+                            <div class="feature-glow"></div>
+                        </div>
+                        <h5 class="feature-title">Secure & Private</h5>
+                        <p class="feature-desc">Your health data is protected with enterprise-grade encryption and security.</p>
+                        <div class="feature-link">
+                            <span>Learn More</span>
+                            <i class="fas fa-arrow-right"></i>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <div class="card feature-card h-100">
-                        <div class="card-body p-4">
-                            <div class="feature-icon feature-icon-secondary mb-3">
+                    <div class="feature-card-new">
+                        <div class="feature-icon-wrapper">
+                            <div class="feature-icon-new feature-blue">
                                 <i class="fas fa-clock"></i>
                             </div>
-                            <h5 class="fw-semibold mb-2">24/7 Access</h5>
-                            <p class="text-muted mb-0">Access your healthcare information anytime, anywhere you need.</p>
+                            <div class="feature-glow"></div>
+                        </div>
+                        <h5 class="feature-title">24/7 Access</h5>
+                        <p class="feature-desc">Access your healthcare information anytime, anywhere you need it.</p>
+                        <div class="feature-link">
+                            <span>Get Started</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section mb-5">
+            <div class="text-center mb-5">
+                <span class="section-badge section-badge-warning">
+                    <i class="fas fa-lightbulb me-2"></i>Got Questions?
+                </span>
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">Find answers to common questions about our healthcare platform</p>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="faq-list">
+                        <div class="faq-item" data-aos="fade-up">
+                            <div class="faq-icon">
+                                <i class="fas fa-calendar-plus"></i>
+                            </div>
+                            <div class="faq-content">
+                                <button class="faq-question" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true">
+                                    <span>How do I book an appointment?</span>
+                                    <i class="fas fa-chevron-down faq-arrow"></i>
+                                </button>
+                                <div id="faq1" class="collapse show">
+                                    <div class="faq-answer">
+                                        Simply create an account, browse our list of doctors, select your preferred healthcare professional, choose an available time slot, and confirm your appointment. You'll receive a confirmation email with all the details.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-icon faq-icon-green">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="faq-content">
+                                <button class="faq-question collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false">
+                                    <span>Is my medical data secure?</span>
+                                    <i class="fas fa-chevron-down faq-arrow"></i>
+                                </button>
+                                <div id="faq2" class="collapse">
+                                    <div class="faq-answer">
+                                        Yes, absolutely! We use enterprise-grade encryption and follow strict healthcare data protection standards. Your personal health information is never shared without your explicit consent.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-icon faq-icon-orange">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="faq-content">
+                                <button class="faq-question collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false">
+                                    <span>Can I reschedule or cancel an appointment?</span>
+                                    <i class="fas fa-chevron-down faq-arrow"></i>
+                                </button>
+                                <div id="faq3" class="collapse">
+                                    <div class="faq-answer">
+                                        Yes, you can easily reschedule or cancel appointments through your dashboard. We recommend doing so at least 24 hours in advance to allow other patients to book the slot.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-icon faq-icon-purple">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <div class="faq-content">
+                                <button class="faq-question collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false">
+                                    <span>How do I access my medical records?</span>
+                                    <i class="fas fa-chevron-down faq-arrow"></i>
+                                </button>
+                                <div id="faq4" class="collapse">
+                                    <div class="faq-answer">
+                                        After logging in, navigate to the "Medical Records" section in your dashboard. You can view, download, and share your records with healthcare providers as needed.
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -110,13 +449,47 @@
         </div>
 
         <!-- CTA Section -->
-        <div class="card cta-card">
-            <div class="card-body p-4 p-lg-5 text-center">
-                <h3 class="fw-bold mb-2">Ready to take control of your health?</h3>
-                <p class="text-muted mb-4">Join thousands of patients who trust our platform for their healthcare needs.</p>
-                <a class="btn btn-primary btn-lg px-5" asp-controller="Account" asp-action="Register">
-                    Create Free Account
-                </a>
+        <div class="cta-section-new">
+            <div class="cta-bg-shapes">
+                <div class="cta-shape cta-shape-1"></div>
+                <div class="cta-shape cta-shape-2"></div>
+                <div class="cta-shape cta-shape-3"></div>
+            </div>
+            <div class="cta-floating-icons">
+                <div class="cta-float-icon cta-float-1"><i class="fas fa-heartbeat"></i></div>
+                <div class="cta-float-icon cta-float-2"><i class="fas fa-plus"></i></div>
+                <div class="cta-float-icon cta-float-3"><i class="fas fa-star"></i></div>
+                <div class="cta-float-icon cta-float-4"><i class="fas fa-shield-alt"></i></div>
+            </div>
+            <div class="cta-content">
+                <div class="cta-icon-main">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h2 class="cta-title">Ready to Take Control of Your Health?</h2>
+                <p class="cta-description">Join thousands of patients who trust our platform for their healthcare needs. Start your wellness journey today!</p>
+                <div class="cta-buttons">
+                    <a class="cta-btn-primary" asp-controller="Account" asp-action="Register">
+                        <i class="fas fa-user-plus me-2"></i>Create Free Account
+                        <span class="btn-shine"></span>
+                    </a>
+                    <a class="cta-btn-secondary" asp-controller="Account" asp-action="Login">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </a>
+                </div>
+                <div class="cta-features">
+                    <div class="cta-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Free Forever</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i class="fas fa-lock"></i>
+                        <span>100% Secure</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i class="fas fa-bolt"></i>
+                        <span>Instant Access</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

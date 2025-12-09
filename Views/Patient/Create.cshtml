@@ -61,7 +61,8 @@
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label asp-for="DateOfBirth" class="form-label">Date of Birth *</label>
-                            <input asp-for="DateOfBirth" type="date" class="form-control" required />
+                            <input asp-for="DateOfBirth" type="date" class="form-control" required 
+                                   min="1900-01-01" max="@DateTime.Now.ToString("yyyy-MM-dd")" />
                             <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                         </div>
                         <div class="col-md-4">
